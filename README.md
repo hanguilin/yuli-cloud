@@ -1,2 +1,2 @@
-# yuli
-基于SpringCloudAlibaba构建的项目
+# yuli-cloud
+基于SpringCloudAlibaba构建的敏捷开发项目
