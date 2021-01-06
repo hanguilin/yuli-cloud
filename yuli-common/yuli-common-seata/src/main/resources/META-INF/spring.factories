@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    cn.javayuli.seata.config.DataSourceProxyConfig
+    cn.javayuli.common.seata.config.DataSourceProxyConfig

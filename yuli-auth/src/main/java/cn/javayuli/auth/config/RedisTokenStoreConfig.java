@@ -1,6 +1,6 @@
 package cn.javayuli.auth.config;
 
-import cn.javayuli.core.constant.OAuth2Constant;
+import cn.javayuli.common.core.constant.OAuth2Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

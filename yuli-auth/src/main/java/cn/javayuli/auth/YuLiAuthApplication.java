@@ -1,5 +1,6 @@
 package cn.javayuli.auth;
 
+import cn.javayuli.common.security.annotation.EnableYuLiFeignClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 
@@ -8,6 +9,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  *
  * @author hanguilin
  */
+@EnableYuLiFeignClients
 @SpringCloudApplication
 public class YuLiAuthApplication {
 

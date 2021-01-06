@@ -12,16 +12,21 @@
     <artifactId>yuli-common-security</artifactId>
 
     <dependencies>
-        <!-- oauth2.0认证 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
         <!-- 核心库 -->
         <dependency>
             <groupId>cn.javayuli</groupId>
             <artifactId>yuli-common-core</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.javayuli</groupId>
+            <artifactId>yuli-system-ref</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- oauth2.0认证 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
         <!--feign 依赖-->
         <dependency>

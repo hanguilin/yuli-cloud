@@ -1,12 +1,9 @@
 package cn.javayuli.test.feign.impl;
 
-import cn.javayuli.security.entity.YuLiUser;
 import cn.javayuli.test.feign.RemoteUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.security.Principal;
 
 /**
  * 熔断降级

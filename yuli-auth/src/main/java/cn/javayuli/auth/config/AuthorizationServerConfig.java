@@ -1,11 +1,13 @@
 package cn.javayuli.auth.config;
 
-import cn.javayuli.auth.config.service.SysUserDetailsService;
-import cn.javayuli.core.constant.SecurityConstant;
-import cn.javayuli.security.entity.YuLiUser;
+import cn.javayuli.common.core.constant.SecurityConstant;
+import cn.javayuli.common.security.config.YuLiWebResponseExceptionTranslator;
+import cn.javayuli.common.security.entity.YuLiUser;
+import cn.javayuli.common.security.service.SysUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
@@ -70,11 +72,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 
-        endpoints.authenticationManager(authenticationManager)
+        endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
+                .authenticationManager(authenticationManager)
                 .userDetailsService(sysUserDetailsService)
                 .tokenStore(redisTokenStore)
                 .tokenEnhancer(tokenEnhancer())
-                .reuseRefreshTokens(false);
+                .reuseRefreshTokens(false)
+                .pathMapping("/oauth/confirm_access", "/token/confirm_access")
+                .exceptionTranslator(new YuLiWebResponseExceptionTranslator());;
     }
 
     /**
@@ -89,8 +94,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             YuLiUser yuLiUser = (YuLiUser) authentication.getUserAuthentication().getPrincipal();
             additionalInfo.put(SecurityConstant.LICENCE, SecurityConstant.PROJECT_LICENSE);
             additionalInfo.put(SecurityConstant.DETAILS_USER_ID, yuLiUser.getId());
-            // SpringSecurity中username对应本系统中account字段
-            additionalInfo.put(SecurityConstant.DETAILS_USER_ACCOUNT, yuLiUser.getUsername());
+            additionalInfo.put(SecurityConstant.DETAILS_USERNAME, yuLiUser.getUsername());
+            additionalInfo.put(SecurityConstant.DETAILS_NICKNAME, yuLiUser.getNickname());
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             return accessToken;
         };

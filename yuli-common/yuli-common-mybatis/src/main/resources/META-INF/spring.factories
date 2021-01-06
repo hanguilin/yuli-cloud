@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    cn.javayuli.mybatis.config.HikariDataSourceConfig
+    cn.javayuli.common.mybatis.config.HikariDataSourceConfig

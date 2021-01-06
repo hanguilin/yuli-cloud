@@ -13,6 +13,7 @@
         <module>yuli-common</module>
         <module>yuli-auth</module>
         <module>yuli-test</module>
+        <module>yuli-system</module>
     </modules>
 
     <parent>
@@ -31,6 +32,15 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
+    <dependencies>
+        <!--配置文件处理器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
