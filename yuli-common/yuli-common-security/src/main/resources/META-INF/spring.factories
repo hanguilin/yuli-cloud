@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    cn.javayuli.common.security.aspect.InnerAspect,\
+    cn.javayuli.common.security.service.SysUserDetailsService
