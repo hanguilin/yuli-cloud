@@ -23,7 +23,7 @@
 yuli-cloud
 
 ├── yuli-auth -- oauth2 认证中心
-└── yuli-common 公共项目形成的maven聚合项目
+└── yuli-common -- 公共项目形成的maven聚合项目
      ├── yuli-common-core -- 核心工具库
      ├── yuli-common-mybatis -- mybatis配置
      ├── yuli-common-security -- security工具
