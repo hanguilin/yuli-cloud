@@ -26,9 +26,4 @@ public class UserController {
         logger.info(">>>>>>>>>>>>>>>>>>>>>>>>");
         return principal;
     }
-
-    @GetMapping("/test")
-    public String doTest() {
-        return "remote service";
-    }
 }

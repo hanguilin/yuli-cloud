@@ -1,8 +1,8 @@
 package cn.javayuli.auth.config;
 
 import cn.javayuli.common.core.constant.SecurityConstant;
+import cn.javayuli.common.core.entity.YuLiUser;
 import cn.javayuli.common.security.config.YuLiWebResponseExceptionTranslator;
-import cn.javayuli.common.security.entity.YuLiUser;
 import cn.javayuli.common.security.service.SysUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

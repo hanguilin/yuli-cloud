@@ -1,5 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     cn.javayuli.system.ref.feign.impl.RemoteUserServiceImpl,\
-    cn.javayuli.system.ref.feign.impl.RemoteUserViewServiceImpl,\
-    cn.javayuli.system.ref.feign.factory.RemoteUserServiceFallbackFactory,\
-    cn.javayuli.system.ref.feign.factory.RemoteUserViewServiceFallbackFactory
+    cn.javayuli.system.ref.feign.factory.RemoteUserServiceFallbackFactory

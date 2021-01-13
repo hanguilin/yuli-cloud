@@ -2,7 +2,7 @@ package cn.javayuli.auth.endpoint;
 
 import cn.hutool.core.util.StrUtil;
 import cn.javayuli.common.core.entity.Rest;
-import cn.javayuli.common.security.util.YuLiSecurityUtil;
+import cn.javayuli.common.core.util.YuLiSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;

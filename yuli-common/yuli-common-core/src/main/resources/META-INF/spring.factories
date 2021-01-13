@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    cn.javayuli.common.core.util.SpringContextHolder
+    cn.javayuli.common.core.util.SpringContextHolder,\
+    cn.javayuli.common.core.component.PasswordEncoderComponent

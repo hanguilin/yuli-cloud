@@ -4,28 +4,27 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * 角色
+ * 用户角色关联类
  *
  * @author hanguilin
  */
-@TableName("sys_role_menu")
-public class SysRoleMenu extends Model<SysRoleMenu> {
+@TableName("sys_user_role")
+public class SysUserRole extends Model<SysUserRole> {
 
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
+     * 用户id
+     */
+    private String userId;
+
+    /**
      * 角色id
      */
     private String roleId;
-
-    /**
-     * 菜单id
-     */
-    private String menuId;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -36,19 +35,20 @@ public class SysRoleMenu extends Model<SysRoleMenu> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String updateBy;
+
     private String remark;
 
     @TableLogic
     private String delFlag;
 
-    @TableField(exist = false)
-    private List<SysMenu> menuList;
+    public SysUserRole() {
+    }
 
-    public SysRoleMenu() {}
-
-    public SysRoleMenu(String roleId, String menuId) {
+    public SysUserRole(String userId, String roleId) {
+        this.userId = userId;
         this.roleId = roleId;
-        this.menuId = menuId;
     }
 
     public String getId() {
@@ -59,20 +59,20 @@ public class SysRoleMenu extends Model<SysRoleMenu> {
         this.id = id;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getRoleId() {
         return roleId;
     }
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
-    }
-
-    public String getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(String menuId) {
-        this.menuId = menuId;
     }
 
     public LocalDateTime getCreateTime() {
@@ -99,6 +99,14 @@ public class SysRoleMenu extends Model<SysRoleMenu> {
         this.updateTime = updateTime;
     }
 
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -113,13 +121,5 @@ public class SysRoleMenu extends Model<SysRoleMenu> {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
-    }
-
-    public List<SysMenu> getMenuList() {
-        return menuList;
-    }
-
-    public void setMenuList(List<SysMenu> menuList) {
-        this.menuList = menuList;
     }
 }

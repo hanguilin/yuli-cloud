@@ -15,6 +15,12 @@
             <groupId>cn.javayuli</groupId>
             <artifactId>yuli-common-mybatis</artifactId>
             <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cn.javayuli</groupId>
+                    <artifactId>yuli-common-security</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>cn.javayuli</groupId>

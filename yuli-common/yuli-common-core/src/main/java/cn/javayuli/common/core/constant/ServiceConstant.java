@@ -10,5 +10,5 @@ public interface ServiceConstant {
     /**
      * 系统服务
      */
-    String SYSTEM = "yuli-system-api";
+    String SYSTEM_API = "yuli-system-api";
 }

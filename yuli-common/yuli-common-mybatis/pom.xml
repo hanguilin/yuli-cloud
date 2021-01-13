@@ -23,5 +23,10 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.javayuli</groupId>
+            <artifactId>yuli-common-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>

@@ -17,24 +17,45 @@ public class SysRole extends Model<SysRole> {
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
+    /**
+     * 角色名称
+     */
     private String name;
 
+    /**
+     * 角色英文名称
+     */
     private String enName;
 
+    /**
+     * 是否系统数据 0是，1否
+     */
     private String system;
 
+    /**
+     * 是否系可用 0是，1否
+     */
     private String enabled;
 
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
+    @TableField(fill = FieldFill.INSERT)
     private String createBy;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String updateBy;
 
     private String remark;
 
     @TableLogic
     private String delFlag;
+
+    @TableField(exist = false)
+    private List<SysUser> userList;
 
     @TableField(exist = false)
     private List<SysMenu> menuList;
@@ -106,6 +127,14 @@ public class SysRole extends Model<SysRole> {
         this.updateTime = updateTime;
     }
 
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -136,5 +165,13 @@ public class SysRole extends Model<SysRole> {
 
     public void setMenuIds(String menuIds) {
         this.menuIds = menuIds;
+    }
+
+    public List<SysUser> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<SysUser> userList) {
+        this.userList = userList;
     }
 }

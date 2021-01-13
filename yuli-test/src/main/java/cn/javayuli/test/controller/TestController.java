@@ -1,7 +1,7 @@
 package cn.javayuli.test.controller;
 
-import cn.javayuli.common.security.entity.YuLiUser;
-import cn.javayuli.common.security.util.YuLiSecurityUtil;
+import cn.javayuli.common.core.entity.YuLiUser;
+import cn.javayuli.common.core.util.YuLiSecurityUtil;
 import cn.javayuli.test.feign.RemoteUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

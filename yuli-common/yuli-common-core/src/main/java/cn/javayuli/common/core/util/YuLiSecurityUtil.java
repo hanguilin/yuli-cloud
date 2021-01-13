@@ -1,8 +1,8 @@
-package cn.javayuli.common.security.util;
+package cn.javayuli.common.core.util;
 
 import cn.hutool.core.util.StrUtil;
 import cn.javayuli.common.core.constant.SecurityConstant;
-import cn.javayuli.common.security.entity.YuLiUser;
+import cn.javayuli.common.core.entity.YuLiUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

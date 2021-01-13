@@ -1,7 +1,7 @@
 package cn.javayuli.common.security.config;
 
 import cn.javayuli.common.core.constant.SecurityConstant;
-import cn.javayuli.common.security.entity.YuLiUser;
+import cn.javayuli.common.core.entity.YuLiUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

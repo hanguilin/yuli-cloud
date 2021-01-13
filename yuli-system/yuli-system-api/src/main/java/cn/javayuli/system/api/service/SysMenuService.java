@@ -1,5 +1,6 @@
 package cn.javayuli.system.api.service;
 
+import cn.javayuli.common.core.entity.Rest;
 import cn.javayuli.system.ref.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -29,4 +30,27 @@ public interface SysMenuService extends IService<SysMenu> {
      * @return
      */
     List<SysMenu> findMenuTree(String topId, String excludeId, String type);
+
+    /**
+     * 更新数据
+     * @param sysMenu 菜单数据
+     * @return
+     */
+    Rest<Boolean> updateMenu(SysMenu sysMenu);
+
+    /**
+     * 删除菜单
+     *
+     * @param ids 主键id
+     * @return
+     */
+    Rest<Boolean> deleteMenu(String ids);
+
+    /**
+     * 保存数据
+     *
+     * @param sysMenu 菜单数据
+     * @return
+     */
+    Rest<Boolean> saveMenu(SysMenu sysMenu);
 }

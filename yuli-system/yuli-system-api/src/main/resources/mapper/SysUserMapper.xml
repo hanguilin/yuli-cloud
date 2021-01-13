@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.javayuli.system.api.mapper.SysUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.javayuli.system.ref.entity.SysUser">
+        <id column="id" property="id"/>
+        <result column="nickname" property="nickname"/>
+        <result column="username" property="username"/>
+        <result column="avatar" property="avatar"/>
+        <result column="office_id" property="officeId"/>
+        <result column="email" property="email"/>
+        <result column="telephone" property="telephone"/>
+        <result column="enabled" property="enabled"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="base_column">
+        a.id AS id, a.nickname AS nickname, a.username AS username, a.avatar AS avatar, a.office_id AS officeId, a.email AS email, a.telephone AS telephone, a.enabled AS enabled, a.create_time, a.create_by AS createBy, a.update_time AS updateTime, a.update_by AS updateBy, a.del_flag AS delFlag
+    </sql>
+
+    <!--关联查询用户列表-->
+    <select id="findList" resultType="cn.javayuli.system.ref.entity.SysUser">
+		SELECT
+			<include refid="base_column" />
+			,o.name AS "office.name"
+			,o.id AS "office.id"
+		FROM
+			(SELECT * FROM sys_user WHERE del_flag = '0') a
+		LEFT JOIN sys_office o ON a.office_id = o.id AND o.del_flag = '0'
+		<where>
+            <if test="sysUser.username != null and sysUser.username != ''">
+                AND a.username LIKE CONCAT(#{sysUser.username}, '%')
+            </if>
+            <if test="sysUser.nickname != null and sysUser.nickname != ''">
+                AND a.nickname LIKE CONCAT(#{sysUser.nickname}, '%')
+            </if>
+            <if test="sysUser.office != null and sysUser.office.name != null and sysUser.office.name != ''">
+                AND o.name LIKE CONCAT(#{sysUser.office.name}, '%')
+            </if>
+            <if test="sysUser.office != null and sysUser.office.id != null and sysUser.office.id != ''">
+                AND o.id = #{sysUser.office.id}
+            </if>
+        </where>
+	</select>
+
+    <!--关联查询角色下的用户-->
+    <select id="findUserOfRole" resultType="cn.javayuli.system.ref.entity.SysUser">
+        SELECT
+        <include refid="base_column" />
+        ,o.name AS "office.name"
+        ,o.id AS "office.id"
+        FROM
+        (SELECT * FROM sys_role WHERE id = #{sysUser.sysRole.id} AND del_flag = '0') r
+        LEFT JOIN sys_user_role ur ON ur.role_id = r.id AND ur.del_flag = '0'
+        LEFT JOIN sys_user a on a.id = ur.user_id AND a.del_flag = '0'
+        LEFT JOIN sys_office o ON a.office_id = o.id AND o.del_flag = '0'
+        <where>
+            <if test="sysUser.username != null and sysUser.username != ''">
+                AND a.username LIKE CONCAT(#{sysUser.username}, '%')
+            </if>
+            <if test="sysUser.nickname != null and sysUser.nickname != ''">
+                AND a.nickname LIKE CONCAT(#{sysUser.nickname}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

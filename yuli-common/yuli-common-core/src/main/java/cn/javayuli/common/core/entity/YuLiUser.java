@@ -1,4 +1,4 @@
-package cn.javayuli.common.security.entity;
+package cn.javayuli.common.core.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

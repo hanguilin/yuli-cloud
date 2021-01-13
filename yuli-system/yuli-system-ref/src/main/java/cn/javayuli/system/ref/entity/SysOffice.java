@@ -7,50 +7,30 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 菜单
+ * 机构entity
  *
  * @author hanguilin
  */
-@TableName("sys_menu")
-public class SysMenu extends Model<SysMenu> {
+@TableName("sys_office")
+public class SysOffice extends Model<SysOffice> {
 
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 标题
+     * 机构名称
      */
-    private String title;
+    private String name;
 
     /**
-     * 路径
+     * 是否可用
      */
-    private String path;
+    private String enabled;
 
     /**
-     * 图标样式
-     */
-    private String icon;
-
-    /**
-     * 是否可见
-     */
-    private String visible;
-
-    /**
-     * 类型 0、目录；1、菜单；2、按钮
+     * 机构类型 0、公司；1、部门；2、团队；3、其他
      */
     private String type;
-
-    /**
-     * 链接类型 0、系统页面；1、外链
-     */
-    private String target;
-
-    /**
-     * 权限标识
-     */
-    private String permission;
 
     /**
      * 排序号
@@ -80,13 +60,10 @@ public class SysMenu extends Model<SysMenu> {
     private String delFlag;
 
     /**
-     * 子菜单
+     * 子机构
      */
     @TableField(exist = false)
-    private List<SysMenu> children;
-
-    @TableField(exist = false)
-    private SysMenu parent;
+    private List<SysOffice> children;
 
     public String getId() {
         return id;
@@ -96,36 +73,20 @@ public class SysMenu extends Model<SysMenu> {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPath() {
-        return path;
+    public String getEnabled() {
+        return enabled;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getVisible() {
-        return visible;
-    }
-
-    public void setVisible(String visible) {
-        this.visible = visible;
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
     }
 
     public String getType() {
@@ -134,22 +95,6 @@ public class SysMenu extends Model<SysMenu> {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public void setPermission(String permission) {
-        this.permission = permission;
     }
 
     public Integer getSort() {
@@ -216,19 +161,11 @@ public class SysMenu extends Model<SysMenu> {
         this.delFlag = delFlag;
     }
 
-    public List<SysMenu> getChildren() {
+    public List<SysOffice> getChildren() {
         return children;
     }
 
-    public void setChildren(List<SysMenu> children) {
+    public void setChildren(List<SysOffice> children) {
         this.children = children;
-    }
-
-    public SysMenu getParent() {
-        return parent;
-    }
-
-    public void setParent(SysMenu parent) {
-        this.parent = parent;
     }
 }

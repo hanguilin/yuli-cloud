@@ -3,12 +3,8 @@ package cn.javayuli.system.api.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.javayuli.common.core.entity.Rest;
 import cn.javayuli.system.api.mapper.SysRoleMapper;
-import cn.javayuli.system.api.service.SysMenuService;
-import cn.javayuli.system.api.service.SysRoleMenuService;
-import cn.javayuli.system.api.service.SysRoleService;
-import cn.javayuli.system.ref.entity.SysMenu;
-import cn.javayuli.system.ref.entity.SysRole;
-import cn.javayuli.system.ref.entity.SysRoleMenu;
+import cn.javayuli.system.api.service.*;
+import cn.javayuli.system.ref.entity.*;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,24 +41,26 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             // 通过角色菜单表查询当前角色持有的菜单数据
             List<String> menuIdList = sysRoleMenuService.list(Wrappers.lambdaQuery(SysRoleMenu.class)
                     .eq(SysRoleMenu::getRoleId, id)).stream().map(o -> o.getMenuId()).collect(Collectors.toList());
-            // 根据菜单id查询菜单数据
-            List<SysMenu> menuList = sysMenuService.listByIds(menuIdList);
-            // 根据父节点进行分组
-            Map<String, List<SysMenu>> groupingBy = menuList.stream().map(o -> {
-                if (o.getParentId() == null) {
-                    o.setParentId("NULL");
-                }
-                return o;
-            }).collect(Collectors.groupingBy(SysMenu::getParentId));
-            // 筛选出没有子节点的节点
-            String menuIds = menuList
-                    .stream().filter(o -> {
-                        List<SysMenu> temp = groupingBy.get(o.getId());
-                        return CollUtil.isEmpty(temp);
-                    })
-                    .map(SysMenu::getId)
-                    .collect(Collectors.joining(","));
-            role.setMenuIds(menuIds);
+            if (CollUtil.isNotEmpty(menuIdList)) {
+                // 根据菜单id查询菜单数据
+                List<SysMenu> menuList = sysMenuService.listByIds(menuIdList);
+                // 根据父节点进行分组
+                Map<String, List<SysMenu>> groupingBy = menuList.stream().map(o -> {
+                    if (o.getParentId() == null) {
+                        o.setParentId("NULL");
+                    }
+                    return o;
+                }).collect(Collectors.groupingBy(SysMenu::getParentId));
+                // 筛选出没有子节点的节点
+                String menuIds = menuList
+                        .stream().filter(o -> {
+                            List<SysMenu> temp = groupingBy.get(o.getId());
+                            return CollUtil.isEmpty(temp);
+                        })
+                        .map(SysMenu::getId)
+                        .collect(Collectors.joining(","));
+                role.setMenuIds(menuIds);
+            }
         }
         return Rest.success(role);
     }
