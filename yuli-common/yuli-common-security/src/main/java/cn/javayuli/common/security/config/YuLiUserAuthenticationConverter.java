@@ -55,7 +55,8 @@ public class YuLiUserAuthenticationConverter implements UserAuthenticationConver
 			String id = (String) map.get(SecurityConstant.DETAILS_USER_ID);
 			String username = (String) map.get(SecurityConstant.DETAILS_USERNAME);
 			String nickname = (String) map.get(SecurityConstant.DETAILS_USERNAME);
-			YuLiUser user = new YuLiUser(id, username, N_A, nickname, authorities);
+			String enabled = (String) map.get(SecurityConstant.DETAILS_ENABLED);
+			YuLiUser user = new YuLiUser(id, username, N_A, nickname, enabled, authorities);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);
 		}
 		return null;

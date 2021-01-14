@@ -23,9 +23,14 @@ public class SysMenu extends Model<SysMenu> {
     private String title;
 
     /**
-     * 路径
+     * 路由路径
      */
     private String path;
+
+    /**
+     * 外链url
+     */
+    private String url;
 
     /**
      * 图标样式
@@ -110,6 +115,14 @@ public class SysMenu extends Model<SysMenu> {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getIcon() {

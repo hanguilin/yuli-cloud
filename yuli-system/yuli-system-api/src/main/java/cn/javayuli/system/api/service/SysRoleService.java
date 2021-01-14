@@ -4,6 +4,8 @@ import cn.javayuli.common.core.entity.Rest;
 import cn.javayuli.system.ref.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 角色service
  *
@@ -18,4 +20,12 @@ public interface SysRoleService extends IService<SysRole> {
      * @return
      */
     Rest<SysRole> getInfo(String id);
+
+    /**
+     * 根据用户id获取角色
+     *
+     * @param userId 用户id
+     * @return
+     */
+    List<SysRole> getUserRole(String userId);
 }

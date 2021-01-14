@@ -2,13 +2,13 @@ package cn.javayuli.system.api.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.javayuli.common.core.constant.FlagConstant;
 import cn.javayuli.common.core.entity.Rest;
 import cn.javayuli.system.api.mapper.SysMenuMapper;
 import cn.javayuli.system.api.service.SysMenuService;
-import cn.javayuli.system.api.service.UserRoleMenuViewService;
+import cn.javayuli.system.api.service.SysRoleMenuService;
+import cn.javayuli.system.api.service.SysUserRoleService;
 import cn.javayuli.system.ref.entity.SysMenu;
-import cn.javayuli.system.ref.entity.UserRoleMenuView;
+import cn.javayuli.system.ref.entity.SysRoleMenu;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Splitter;
@@ -30,23 +30,10 @@ import java.util.stream.Collectors;
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
 
     @Autowired
-    private UserRoleMenuViewService userRoleMenuViewService;
+    private SysUserRoleService sysUserRoleService;
 
-    /**
-     * 查询菜单树
-     *
-     * @param currentUser 用户账户,唯一
-     * @return
-     */
-    @Override
-    public List<SysMenu> ownMenuTree(String currentUser) {
-        List<UserRoleMenuView> userRoleMenuViewList = userRoleMenuViewService.list(Wrappers.lambdaQuery(UserRoleMenuView.class)
-                .eq(UserRoleMenuView::getUsername, currentUser)
-                .eq(UserRoleMenuView::getMenuVisible, FlagConstant.TRUE)
-                .orderByAsc(UserRoleMenuView::getMenuSort));
-        List<SysMenu> menuList = userRoleMenuViewList.stream().map(o -> viewToMenu(o)).collect(Collectors.toList());
-        return setDeepTreeMenuChildren(menuList, null);
-    }
+    @Autowired
+    private SysRoleMenuService sysRoleMenuService;
 
     /**
      * 查询列表菜单树
@@ -73,6 +60,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Rest<Boolean> updateMenu(SysMenu sysMenu) {
+        SysMenu parent = sysMenu.getParent();
+        if (parent != null) {
+            sysMenu.setParentId(parent.getId());
+        }
         boolean res = updateById(sysMenu);
         if (!res) {
             return Rest.fail("更新失败");
@@ -127,6 +118,31 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     /**
+     * 根据角色id获取菜单
+     *
+     * @param idList 角色id
+     * @return
+     */
+    @Override
+    public List<SysMenu> getRoleMenu(List<String> idList) {
+        if (CollUtil.isEmpty(idList)) {
+            return CollUtil.empty(null);
+        }
+        // 获取角色菜单列表
+        List<SysRoleMenu> sysRoleMenuList = sysRoleMenuService.list(Wrappers.lambdaQuery(SysRoleMenu.class).in(SysRoleMenu::getRoleId, idList));
+        if (CollUtil.isEmpty(sysRoleMenuList)) {
+            return CollUtil.empty(null);
+        }
+        List<String> menuIdList = sysRoleMenuList.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList());
+        // 获取菜单列表
+        List<SysMenu> menuList = list(Wrappers.lambdaQuery(SysMenu.class).in(SysMenu::getId, menuIdList));
+        if (CollUtil.isEmpty(menuList)) {
+            return CollUtil.empty(null);
+        }
+        return menuList;
+    }
+
+    /**
      * 获取菜单的所有菜单子项
      *
      * @param ids 目标id
@@ -162,7 +178,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      * @param topId 上级id
      * @return
      */
-    private List<SysMenu> setDeepTreeMenuChildren(List<SysMenu> sysMenus, String topId) {
+    @Override
+    public List<SysMenu> setDeepTreeMenuChildren(List<SysMenu> sysMenus, String topId) {
 
         // 顶级菜单，从上往下设值
         return sysMenus.stream().filter(o -> {
@@ -195,24 +212,5 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                 children.sort(Comparator.comparing(SysMenu::getSort));
             }
         }
-    }
-
-    /**
-     * 视图对象转menu
-     *
-     * @param view 视图
-     * @return
-     */
-    private SysMenu viewToMenu(UserRoleMenuView view) {
-        SysMenu sysMenu = new SysMenu();
-        sysMenu.setId(view.getMenuId());
-        sysMenu.setTitle(view.getMenuTitle());
-        sysMenu.setIcon(view.getMenuIcon());
-        sysMenu.setPath(view.getMenuPath());
-        sysMenu.setType(view.getMenuType());
-        sysMenu.setSort(view.getMenuSort());
-        sysMenu.setParentId(view.getMenuParentId());
-        sysMenu.setTarget(view.getMenuTarget());
-        return sysMenu;
     }
 }

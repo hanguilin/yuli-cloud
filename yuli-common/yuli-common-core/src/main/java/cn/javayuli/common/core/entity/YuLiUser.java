@@ -1,5 +1,6 @@
 package cn.javayuli.common.core.entity;
 
+import cn.javayuli.common.core.constant.FlagConstant;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -25,10 +26,16 @@ public class YuLiUser extends User implements Serializable {
      */
     private String nickname;
 
-    public YuLiUser(String id, String username, String password, String nickname, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
+    /**
+     * 用户是否启用
+     */
+    private String enabled;
+
+    public YuLiUser(String id, String username, String password, String nickname, String enabled, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, FlagConstant.TRUE.equals(enabled), true, true, true, authorities);
         this.id = id;
         this.nickname = nickname;
+        this.enabled = enabled;
     }
 
     public String getId() {
@@ -45,5 +52,13 @@ public class YuLiUser extends User implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
     }
 }

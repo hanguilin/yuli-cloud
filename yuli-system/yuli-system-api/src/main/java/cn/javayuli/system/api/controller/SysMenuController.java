@@ -1,7 +1,6 @@
 package cn.javayuli.system.api.controller;
 
 import cn.javayuli.common.core.entity.Rest;
-import cn.javayuli.common.core.util.YuLiSecurityUtil;
 import cn.javayuli.system.api.service.SysMenuService;
 import cn.javayuli.system.ref.entity.SysMenu;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +19,6 @@ public class SysMenuController {
 
     @Autowired
     private SysMenuService sysMenuService;
-
-    /**
-     * 获取菜单树
-     *
-     * @return
-     */
-    @GetMapping("/tree/own")
-    public Rest<List<SysMenu>> doOwnMenuTree() {
-        String currentUser = YuLiSecurityUtil.getUser().getUsername();
-        return Rest.success(sysMenuService.ownMenuTree(currentUser));
-    }
 
     /**
      * 获取表格中菜单树

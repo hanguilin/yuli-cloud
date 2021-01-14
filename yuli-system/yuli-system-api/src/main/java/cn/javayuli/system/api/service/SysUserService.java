@@ -1,9 +1,12 @@
 package cn.javayuli.system.api.service;
 
 import cn.javayuli.common.core.entity.Rest;
+import cn.javayuli.system.ref.entity.SysMenu;
 import cn.javayuli.system.ref.entity.SysUser;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * 用户Service
@@ -50,9 +53,10 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @param page 分页对象
      * @param sysUser 过滤对象
+     * @param roleId 角色id
      * @return
      */
-    Page<SysUser> findUserOfRole(Page page, SysUser sysUser);
+    Page<SysUser> findUserOfRole(Page page, SysUser sysUser, String roleId);
 
     /**
      * 更新数据
@@ -60,4 +64,20 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     Rest<Boolean> updateUser(SysUser sysUser);
+
+    /**
+     * 获取用户权限
+     *
+     * @param username 登录名
+     * @return
+     */
+    Rest<SysUser> getUserPermission(String username);
+
+    /**
+     * 获取用户菜单树
+     *
+     * @param userId 用户id
+     * @return
+     */
+    List<SysMenu> getUserMenu(String userId);
 }

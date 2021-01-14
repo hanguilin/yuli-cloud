@@ -1,11 +1,11 @@
 package cn.javayuli.system.api.controller;
 
 import cn.javayuli.common.core.entity.Rest;
+import cn.javayuli.common.core.util.YuLiSecurityUtil;
 import cn.javayuli.common.security.annotation.Inner;
 import cn.javayuli.system.api.service.SysUserService;
-import cn.javayuli.system.api.service.UserRoleMenuViewService;
+import cn.javayuli.system.ref.entity.SysMenu;
 import cn.javayuli.system.ref.entity.SysUser;
-import cn.javayuli.system.ref.entity.UserRoleMenuView;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +26,27 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
-    @Autowired
-    private UserRoleMenuViewService userRoleMenuViewService;
-
+    /**
+     * 获取用户权限
+     *
+     * @param username 登录名
+     * @return
+     */
     @Inner
-    @GetMapping("/byName")
-    public Rest<SysUser> doGetSysUserByName(@RequestParam("username") String username) {
-        SysUser sysUser = sysUserService.getOne(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getUsername, username));
-        return Rest.success(sysUser);
+    @GetMapping("/permission")
+    public Rest<SysUser> doGetUserPermission(@RequestParam("username") String username) {
+        return sysUserService.getUserPermission(username);
+    }
+
+    /**
+     * 获取用户菜单树
+     *
+     * @return
+     */
+    @GetMapping("/menu/tree")
+    public Rest<List<SysMenu>> doUserMenuTree() {
+        String userId = YuLiSecurityUtil.getUser().getId();
+        return Rest.success(sysUserService.getUserMenu(userId));
     }
 
     /**
@@ -105,27 +118,15 @@ public class SysUserController {
     }
 
     /**
-     * 通过username查询关联的角色菜单信息
-     *
-     * @param username 登录账户名
-     * @return
-     */
-    @Inner
-    @GetMapping("/view/{username}")
-    public Rest<List<UserRoleMenuView>> doFindViewList(@PathVariable("username") String username) {
-        List<UserRoleMenuView> list = userRoleMenuViewService.list(Wrappers.lambdaQuery(UserRoleMenuView.class).eq(UserRoleMenuView::getUsername, username));
-        return Rest.success(list);
-    }
-
-    /**
      * 分页查询角色下的用户
      *
      * @param page 分页对象
      * @param sysUser 过滤对象
+     * @param roleId 角色id
      * @return
      */
     @GetMapping("/ofRole/page")
-    public Rest<Page<SysUser>> doOfRolePage (Page page, SysUser sysUser) {
-        return Rest.success(sysUserService.findUserOfRole(page, sysUser));
+    public Rest<Page<SysUser>> doOfRolePage (Page page, SysUser sysUser, String roleId) {
+        return Rest.success(sysUserService.findUserOfRole(page, sysUser, roleId));
     }
 }

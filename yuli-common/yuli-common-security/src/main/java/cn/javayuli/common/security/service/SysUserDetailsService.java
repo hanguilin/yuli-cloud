@@ -5,8 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.javayuli.common.core.constant.SecurityConstant;
 import cn.javayuli.common.core.entity.Rest;
 import cn.javayuli.common.core.entity.YuLiUser;
+import cn.javayuli.system.ref.entity.SysMenu;
+import cn.javayuli.system.ref.entity.SysRole;
 import cn.javayuli.system.ref.entity.SysUser;
-import cn.javayuli.system.ref.entity.UserRoleMenuView;
 import cn.javayuli.system.ref.feign.RemoteUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Security User实现类
@@ -39,31 +42,27 @@ public class SysUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Rest<SysUser> userRest = remoteUserService.doGetSysUserByName(username, SecurityConstant.SOURCE_IN);
-        if (userRest == null || userRest.getData() == null) {
+        Rest<SysUser> userRest = remoteUserService.doGetUserPermission(username, SecurityConstant.SOURCE_IN);
+        SysUser sysUser = userRest.getData();
+        if (userRest == null || sysUser == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        Rest<List<UserRoleMenuView>> viewRest = remoteUserService.doFindViewList(username, SecurityConstant.SOURCE_IN);
-        List<GrantedAuthority> grantedAuthorities;
-        if (viewRest == null || CollUtil.isNotEmpty(viewRest.getData())) {
-            grantedAuthorities = AuthorityUtils.NO_AUTHORITIES;
-        } else {
-            List<UserRoleMenuView> list = viewRest.getData();
-            HashSet<String> authSet = new HashSet<>();
-            if (CollUtil.isNotEmpty(list)) {
-                list.forEach(o -> {
-                    if (StrUtil.isNotBlank(o.getRoleName())) {
-                        authSet.add(SecurityConstant.ROLE + o.getRoleName());
-                    }
-                    if (StrUtil.isNotBlank(o.getMenuPermission())) {
-                        authSet.add(o.getMenuPermission());
-                    }
-                });
-            }
-            String[] authArr = new String[authSet.size()];
-            grantedAuthorities = AuthorityUtils.createAuthorityList(authSet.toArray(authArr));
+        // 结果集
+        HashSet<String> authSet = new HashSet<>();
+        // 角色列表
+        List<SysRole> roleList = sysUser.getRoleList();
+        // 菜单列表
+        List<SysMenu> menuList = sysUser.getMenuList();
+        if (CollUtil.isNotEmpty(roleList)) {
+            Set<String> roleSet = roleList.stream().filter(o -> StrUtil.isNotBlank(o.getEnName())).map(o -> SecurityConstant.ROLE + o.getEnName()).collect(Collectors.toSet());
+            authSet.addAll(roleSet);
         }
-        SysUser sysUser = userRest.getData();
-        return new YuLiUser(sysUser.getId(), sysUser.getUsername(), sysUser.getPassword(), sysUser.getNickname(), grantedAuthorities);
+        if (CollUtil.isNotEmpty(menuList)) {
+            Set<String> permissionSet = menuList.stream().filter(o -> StrUtil.isNotBlank(o.getPermission())).map(SysMenu::getPermission).collect(Collectors.toSet());
+            authSet.addAll(permissionSet);
+        }
+        String[] authArr = new String[authSet.size()];
+        List<GrantedAuthority> grantedAuthorities = AuthorityUtils.createAuthorityList(authSet.toArray(authArr));
+        return new YuLiUser(sysUser.getId(), sysUser.getUsername(), sysUser.getPassword(), sysUser.getNickname(), sysUser.getEnabled(),grantedAuthorities);
     }
 }

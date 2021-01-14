@@ -4,38 +4,37 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * 角色
+ * 字典值
  *
  * @author hanguilin
  */
-@TableName("sys_role")
-public class SysRole extends Model<SysRole> {
+@TableName("sys_dict_value")
+public class SysDictValue extends Model<SysDictValue> {
 
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 角色名称
+     * 类型
      */
-    private String name;
+    private String typeId;
 
     /**
-     * 角色英文名称
+     * 标签
      */
-    private String enName;
+    private String label;
 
     /**
-     * 是否系统数据 0是，1否
+     * 键值
      */
-    private String system;
+    private String value;
 
     /**
-     * 是否系可用 0是，1否
+     * 排序
      */
-    private String enabled;
+    private Integer sort;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -54,56 +53,12 @@ public class SysRole extends Model<SysRole> {
     @TableLogic
     private String delFlag;
 
-    @TableField(exist = false)
-    private List<SysUser> userList;
-
-    @TableField(exist = false)
-    private List<SysMenu> menuList;
-
-    /**
-     * 角色拥有的所有子id
-     */
-    @TableField(exist = false)
-    private String menuIds;
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEnName() {
-        return enName;
-    }
-
-    public void setEnName(String enName) {
-        this.enName = enName;
-    }
-
-    public String getSystem() {
-        return system;
-    }
-
-    public void setSystem(String system) {
-        this.system = system;
-    }
-
-    public String getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(String enabled) {
-        this.enabled = enabled;
     }
 
     public LocalDateTime getCreateTime() {
@@ -154,27 +109,35 @@ public class SysRole extends Model<SysRole> {
         this.delFlag = delFlag;
     }
 
-    public List<SysMenu> getMenuList() {
-        return menuList;
+    public String getTypeId() {
+        return typeId;
     }
 
-    public void setMenuList(List<SysMenu> menuList) {
-        this.menuList = menuList;
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
     }
 
-    public String getMenuIds() {
-        return menuIds;
+    public String getLabel() {
+        return label;
     }
 
-    public void setMenuIds(String menuIds) {
-        this.menuIds = menuIds;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-    public List<SysUser> getUserList() {
-        return userList;
+    public String getValue() {
+        return value;
     }
 
-    public void setUserList(List<SysUser> userList) {
-        this.userList = userList;
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }

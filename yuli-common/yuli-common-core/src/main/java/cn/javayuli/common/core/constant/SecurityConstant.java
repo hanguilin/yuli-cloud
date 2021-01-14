@@ -37,6 +37,11 @@ public interface SecurityConstant {
      */
     String DETAILS_NICKNAME = "nickname";
 
+    /**
+     * 用户是否启用
+     */
+    String DETAILS_ENABLED = "enabled";
+
     /***
      * 资源服务器默认bean名称
      */

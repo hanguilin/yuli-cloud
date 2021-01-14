@@ -3,8 +3,12 @@ package cn.javayuli.system.api.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.javayuli.common.core.entity.Rest;
 import cn.javayuli.system.api.mapper.SysUserMapper;
+import cn.javayuli.system.api.service.SysMenuService;
+import cn.javayuli.system.api.service.SysRoleService;
 import cn.javayuli.system.api.service.SysUserRoleService;
 import cn.javayuli.system.api.service.SysUserService;
+import cn.javayuli.system.ref.entity.SysMenu;
+import cn.javayuli.system.ref.entity.SysRole;
 import cn.javayuli.system.ref.entity.SysUser;
 import cn.javayuli.system.ref.entity.SysUserRole;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -36,6 +40,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private SysUserMapper sysUserMapper;
+
+    @Autowired
+    private SysRoleService sysRoleService;
+
+    @Autowired
+    private SysMenuService sysMenuService;
 
     /**
      * 新建用户
@@ -113,11 +123,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      *
      * @param page 分页对象
      * @param sysUser 过滤对象
+     * @param roleId 角色id
      * @return
      */
     @Override
-    public Page<SysUser> findUserOfRole(Page page, SysUser sysUser) {
-        List<SysUser> userOfRole = sysUserMapper.findUserOfRole(page, sysUser);
+    public Page<SysUser> findUserOfRole(Page page, SysUser sysUser, String roleId) {
+        List<SysUser> userOfRole = sysUserMapper.findUserOfRole(page, sysUser, roleId);
         page.setRecords(userOfRole);
         return page;
     }
@@ -140,6 +151,50 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 保存用户角色关联关系
         saveUserRole(sysUser);
         return Rest.success();
+    }
+
+    /**
+     * 获取用户权限
+     *
+     * @param username 登录名
+     * @return
+     */
+    @Override
+    public Rest<SysUser> getUserPermission(String username) {
+        // 获取用户信息
+        SysUser sysUser = getOne(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getUsername, username));
+        if (sysUser == null) {
+            return Rest.fail("用户不存在");
+        }
+        // 获取用户角色
+        List<SysRole> sysRoles = sysRoleService.getUserRole(sysUser.getId());
+        sysUser.setRoleList(sysRoles);
+        if (CollUtil.isNotEmpty(sysRoles)) {
+            List<String> roleIdList = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+            // 获取角色菜单
+            List<SysMenu> menuList = sysMenuService.getRoleMenu(roleIdList);
+            sysUser.setMenuList(menuList);
+        }
+        return Rest.success(sysUser);
+    }
+
+    /**
+     * 获取用户菜单树
+     *
+     * @param username 登录名
+     * @return
+     */
+    @Override
+    public List<SysMenu> getUserMenu(String username) {
+        // 获取用户角色
+        List<SysRole> sysRoles = sysRoleService.getUserRole(username);
+        if (CollUtil.isNotEmpty(sysRoles)) {
+            List<String> roleIdList = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+            // 获取角色菜单
+            List<SysMenu> menuList = sysMenuService.getRoleMenu(roleIdList);
+            return sysMenuService.setDeepTreeMenuChildren(menuList, null);
+        }
+        return CollUtil.empty(null);
     }
 
     /**

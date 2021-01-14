@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.javayuli.system.api.mapper.SysMenuMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="base_column">
+        a.id AS id, a.title AS title, a.path AS path, a.url AS url, a.icon AS icon, a.type AS type, a.target AS target, a.permission AS permission, a.sort AS sort, a.create_time AS createTime, a.create_by AS createBy, a.update_time AS updateTime, a.update_by AS updateBy, a.del_flag AS delFlag
+    </sql>
+
+</mapper>

@@ -30,7 +30,8 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      *
      * @param page page对象
      * @param sysUser 过滤对象
+     * @param roleId
      * @return
      */
-    List<SysUser> findUserOfRole(Page page, @Param("sysUser") SysUser sysUser);
+    List<SysUser> findUserOfRole(Page page, @Param("sysUser") SysUser sysUser, @Param("roleId") String roleId);
 }

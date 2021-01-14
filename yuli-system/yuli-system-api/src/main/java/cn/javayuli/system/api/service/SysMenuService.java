@@ -14,14 +14,6 @@ import java.util.List;
 public interface SysMenuService extends IService<SysMenu> {
 
     /**
-     * 查询菜单树
-     *
-     * @param currentUser 用户账户，唯一
-     * @return
-     */
-    List<SysMenu> ownMenuTree(String currentUser);
-
-    /**
      * 查询列表菜单树
      *
      * @param topId 上级id
@@ -53,4 +45,21 @@ public interface SysMenuService extends IService<SysMenu> {
      * @return
      */
     Rest<Boolean> saveMenu(SysMenu sysMenu);
+
+    /**
+     * 根据角色id获取菜单
+     *
+     * @param idList 角色id
+     * @return
+     */
+    List<SysMenu> getRoleMenu (List<String> idList);
+
+    /**
+     * 设置递归子菜单
+     *
+     * @param sysMenus 源数据
+     * @param topId 上级id
+     * @return
+     */
+    List<SysMenu> setDeepTreeMenuChildren(List<SysMenu> sysMenus, String topId);
 }

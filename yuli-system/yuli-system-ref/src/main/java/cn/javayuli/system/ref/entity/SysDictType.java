@@ -7,35 +7,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 角色
+ * 字典类型
  *
  * @author hanguilin
  */
-@TableName("sys_role")
-public class SysRole extends Model<SysRole> {
+@TableName("sys_dict_type")
+public class SysDictType extends Model<SysDictType> {
 
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 角色名称
+     * 类型
      */
-    private String name;
-
-    /**
-     * 角色英文名称
-     */
-    private String enName;
-
-    /**
-     * 是否系统数据 0是，1否
-     */
-    private String system;
-
-    /**
-     * 是否系可用 0是，1否
-     */
-    private String enabled;
+    private String type;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -55,16 +40,7 @@ public class SysRole extends Model<SysRole> {
     private String delFlag;
 
     @TableField(exist = false)
-    private List<SysUser> userList;
-
-    @TableField(exist = false)
-    private List<SysMenu> menuList;
-
-    /**
-     * 角色拥有的所有子id
-     */
-    @TableField(exist = false)
-    private String menuIds;
+    private List<SysDictValue> valueList;
 
     public String getId() {
         return id;
@@ -74,36 +50,20 @@ public class SysRole extends Model<SysRole> {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getEnName() {
-        return enName;
+    public List<SysDictValue> getValueList() {
+        return valueList;
     }
 
-    public void setEnName(String enName) {
-        this.enName = enName;
-    }
-
-    public String getSystem() {
-        return system;
-    }
-
-    public void setSystem(String system) {
-        this.system = system;
-    }
-
-    public String getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(String enabled) {
-        this.enabled = enabled;
+    public void setValueList(List<SysDictValue> valueList) {
+        this.valueList = valueList;
     }
 
     public LocalDateTime getCreateTime() {
@@ -152,29 +112,5 @@ public class SysRole extends Model<SysRole> {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
-    }
-
-    public List<SysMenu> getMenuList() {
-        return menuList;
-    }
-
-    public void setMenuList(List<SysMenu> menuList) {
-        this.menuList = menuList;
-    }
-
-    public String getMenuIds() {
-        return menuIds;
-    }
-
-    public void setMenuIds(String menuIds) {
-        this.menuIds = menuIds;
-    }
-
-    public List<SysUser> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<SysUser> userList) {
-        this.userList = userList;
     }
 }

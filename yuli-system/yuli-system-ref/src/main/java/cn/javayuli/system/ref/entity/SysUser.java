@@ -81,7 +81,11 @@ public class SysUser extends Model<SysUser> {
     private SysOffice office;
 
     @TableField(exist = false)
-    private SysRole sysRole;
+    private List<SysRole> roleList;
+
+
+    @TableField(exist = false)
+    private List<SysMenu> menuList;
 
     public String getId() {
         return id;
@@ -219,11 +223,19 @@ public class SysUser extends Model<SysUser> {
         this.office = office;
     }
 
-    public SysRole getSysRole() {
-        return sysRole;
+    public List<SysRole> getRoleList() {
+        return roleList;
     }
 
-    public void setSysRole(SysRole sysRole) {
-        this.sysRole = sysRole;
+    public void setRoleList(List<SysRole> roleList) {
+        this.roleList = roleList;
+    }
+
+    public List<SysMenu> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<SysMenu> menuList) {
+        this.menuList = menuList;
     }
 }

@@ -2,8 +2,8 @@ package cn.javayuli.system.api.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.javayuli.common.core.entity.Rest;
-import cn.javayuli.system.api.service.SysRoleService;
-import cn.javayuli.system.api.service.SysUserRoleService;
+import cn.javayuli.system.api.service.SysDictTypeService;
+import cn.javayuli.system.ref.entity.SysDictType;
 import cn.javayuli.system.ref.entity.SysRole;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -16,19 +16,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 角色controller
+ * 字典类型controller
  *
  * @author hanguilin
  */
 @RestController
-@RequestMapping("/role")
-public class SysRoleController {
+@RequestMapping("/dict/type")
+public class SysDictTypeController {
 
     @Autowired
-    private SysRoleService sysRoleService;
-
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private SysDictTypeService sysDictTypeService;
 
     /**
      * 详情数据
@@ -37,30 +34,30 @@ public class SysRoleController {
      * @return
      */
     @GetMapping("/info/{id}")
-    public Rest<SysRole> doInfo(@PathVariable("id") String id) {
-        return sysRoleService.getInfo(id);
+    public Rest<SysDictType> doInfo(@PathVariable("id") String id) {
+        return sysDictTypeService.getInfo(id);
     }
 
     /**
      * 保存数据
      *
-     * @param sysRole 角色数据
+     * @param sysDictType 字典类型
      * @return
      */
     @PostMapping("/save")
-    public Rest<Boolean> doSave(@RequestBody SysRole sysRole) {
-        return sysRoleService.save(sysRole) ? Rest.success() : Rest.fail("保存失败");
+    public Rest<Boolean> doSave(@RequestBody SysDictType sysDictType) {
+        return sysDictTypeService.save(sysDictType) ? Rest.success() : Rest.fail("保存失败");
     }
 
     /**
      * 更新数据
      *
-     * @param sysRole 角色数据
+     * @param sysDictType 字典类型数据
      * @return
      */
     @PutMapping("/update")
-    public Rest<Boolean> doUpdate(@RequestBody SysRole sysRole) {
-        return sysRoleService.updateById(sysRole) ? Rest.success() : Rest.fail("更新失败");
+    public Rest<Boolean> doUpdate(@RequestBody SysDictType sysDictType) {
+        return sysDictTypeService.updateById(sysDictType) ? Rest.success() : Rest.fail("更新失败");
     }
 
     /**
@@ -73,7 +70,7 @@ public class SysRoleController {
     @DeleteMapping("/delete")
     public Rest<Boolean> doDelete (@RequestParam String ids) {
         List<String> idList = Splitter.on(",").splitToList(ids);
-        sysRoleService.removeByIds(idList);
+        sysDictTypeService.removeByIds(idList);
         return Rest.success();
     }
 
@@ -81,15 +78,14 @@ public class SysRoleController {
      * 删除数据
      *
      * @param page 分页对象
-     * @param sysRole 角色过滤
+     * @param sysDictType 角色过滤
      * @return
      */
     @GetMapping("/page")
-    public Rest<Page<SysRole>> doPage (Page page, SysRole sysRole) {
-        LambdaQueryWrapper<SysRole> lambdaQueryWrapper = Wrappers.lambdaQuery(SysRole.class)
-                .likeRight(StrUtil.isNotBlank(sysRole.getName()), SysRole::getName, sysRole.getName())
-                .likeRight(StrUtil.isNotBlank(sysRole.getEnName()), SysRole::getEnName, sysRole.getEnName());
-        return Rest.success(sysRoleService.page(page, lambdaQueryWrapper));
+    public Rest<Page<SysRole>> doPage (Page page, SysDictType sysDictType) {
+        LambdaQueryWrapper<SysDictType> lambdaQueryWrapper = Wrappers.lambdaQuery(SysDictType.class)
+                .likeRight(StrUtil.isNotBlank(sysDictType.getType()), SysDictType::getType, sysDictType.getType())
+                .likeRight(StrUtil.isNotBlank(sysDictType.getRemark()), SysDictType::getRemark, sysDictType.getRemark());
+        return Rest.success(sysDictTypeService.page(page, lambdaQueryWrapper));
     }
-
 }
