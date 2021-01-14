@@ -6,9 +6,11 @@ import cn.javayuli.common.core.util.YuLiSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,8 +19,9 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
- * @author lengleng
- * @date 2019/2/1 删除token端点
+ * 自定义token端点
+ *
+ * @author hanguilin
  */
 @RestController
 @RequestMapping("/token")
@@ -26,6 +29,9 @@ public class YuLiTokenEndpoint {
 
 	@Autowired
 	private ClientDetailsService clientDetailsService;
+
+	@Autowired
+	private TokenStore tokenStore;
 
 	/**
 	 * 认证页面
@@ -73,8 +79,25 @@ public class YuLiTokenEndpoint {
 		if (StrUtil.isBlank(authHeader)) {
 			return Rest.success();
 		}
-
 		String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
+		return removeToken(tokenValue);
+	}
+
+	/**
+	 * 删除token
+	 * @param token token
+	 */
+	@DeleteMapping("/{token}")
+	public Rest<Boolean> removeToken(@PathVariable("token") String token) {
+		OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
+		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
+			return Rest.success();
+		}
+		// 清空access token
+		tokenStore.removeAccessToken(accessToken);
+		// 清空 refresh token
+		OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
+		tokenStore.removeRefreshToken(refreshToken);
 		return Rest.success();
 	}
 }

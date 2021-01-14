@@ -2,7 +2,6 @@ package cn.javayuli.common.security.config;
 
 import cn.hutool.http.HttpStatus;
 import cn.javayuli.common.core.entity.Rest;
-import cn.javayuli.common.security.exception.DeniedException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,7 @@ public class AccessDeniedHandler extends OAuth2AccessDeniedHandler {
 	private ObjectMapper objectMapper;
 
 	/**
-	 * 授权拒绝处理，使用R包装
+	 * 授权拒绝处理
 	 * @param request request
 	 * @param response response
 	 * @param authException authException
@@ -40,8 +39,8 @@ public class AccessDeniedHandler extends OAuth2AccessDeniedHandler {
 		LOGGER.info("授权失败，禁止访问 {}", request.getRequestURI());
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json; charset=utf-8");
-		Rest<DeniedException> result = Rest.fail(new DeniedException("授权失败，禁止访问"));
-		response.setStatus(HttpStatus.HTTP_FORBIDDEN);
+		Rest<String> result = Rest.fail("授权失败，禁止访问", HttpStatus.HTTP_UNAUTHORIZED);
+		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);
 		PrintWriter printWriter = response.getWriter();
 		printWriter.append(objectMapper.writeValueAsString(result));
 	}

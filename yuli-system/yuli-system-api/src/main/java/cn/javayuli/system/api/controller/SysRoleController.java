@@ -3,13 +3,13 @@ package cn.javayuli.system.api.controller;
 import cn.hutool.core.util.StrUtil;
 import cn.javayuli.common.core.entity.Rest;
 import cn.javayuli.system.api.service.SysRoleService;
-import cn.javayuli.system.api.service.SysUserRoleService;
 import cn.javayuli.system.ref.entity.SysRole;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.base.Splitter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +26,6 @@ public class SysRoleController {
 
     @Autowired
     private SysRoleService sysRoleService;
-
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
 
     /**
      * 详情数据
@@ -47,6 +44,7 @@ public class SysRoleController {
      * @param sysRole 角色数据
      * @return
      */
+    @PreAuthorize("hasAuthority('sys:role:add')")
     @PostMapping("/save")
     public Rest<Boolean> doSave(@RequestBody SysRole sysRole) {
         return sysRoleService.save(sysRole) ? Rest.success() : Rest.fail("保存失败");

@@ -39,6 +39,16 @@ public class SysUserController {
     }
 
     /**
+     * 获取当前用户的权限标识
+     *
+     * @return
+     */
+    @GetMapping("/permission/code")
+    public Rest<List<String>> doGetUserPermissionCode() {
+        return Rest.success(YuLiSecurityUtil.getPermissionCode());
+    }
+
+    /**
      * 获取用户菜单树
      *
      * @return

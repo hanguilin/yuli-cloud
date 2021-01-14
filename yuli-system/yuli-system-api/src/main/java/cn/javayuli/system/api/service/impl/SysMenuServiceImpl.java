@@ -121,10 +121,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      * 根据角色id获取菜单
      *
      * @param idList 角色id
+     * @param types 指定查询的菜单类型
      * @return
      */
     @Override
-    public List<SysMenu> getRoleMenu(List<String> idList) {
+    public List<SysMenu> getRoleMenu(List<String> idList, List<String> types) {
         if (CollUtil.isEmpty(idList)) {
             return CollUtil.empty(null);
         }
@@ -135,7 +136,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
         List<String> menuIdList = sysRoleMenuList.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList());
         // 获取菜单列表
-        List<SysMenu> menuList = list(Wrappers.lambdaQuery(SysMenu.class).in(SysMenu::getId, menuIdList));
+        List<SysMenu> menuList = list(Wrappers.lambdaQuery(SysMenu.class).in(SysMenu::getId, menuIdList).in(CollUtil.isNotEmpty(types), SysMenu::getType, types));
         if (CollUtil.isEmpty(menuList)) {
             return CollUtil.empty(null);
         }

@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -172,7 +173,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (CollUtil.isNotEmpty(sysRoles)) {
             List<String> roleIdList = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
             // 获取角色菜单
-            List<SysMenu> menuList = sysMenuService.getRoleMenu(roleIdList);
+            List<SysMenu> menuList = sysMenuService.getRoleMenu(roleIdList, null);
             sysUser.setMenuList(menuList);
         }
         return Rest.success(sysUser);
@@ -190,8 +191,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<SysRole> sysRoles = sysRoleService.getUserRole(username);
         if (CollUtil.isNotEmpty(sysRoles)) {
             List<String> roleIdList = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
-            // 获取角色菜单
-            List<SysMenu> menuList = sysMenuService.getRoleMenu(roleIdList);
+            // 获取角色菜单(目录和菜单类型)
+            List<SysMenu> menuList = sysMenuService.getRoleMenu(roleIdList, Lists.newArrayList("0", "1"));
             return sysMenuService.setDeepTreeMenuChildren(menuList, null);
         }
         return CollUtil.empty(null);

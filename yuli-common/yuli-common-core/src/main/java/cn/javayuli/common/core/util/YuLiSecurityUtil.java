@@ -7,9 +7,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Security 工具类
@@ -49,18 +49,31 @@ public class YuLiSecurityUtil {
 
     /**
      * 获取用户角色信息
+     *
      * @return 角色集合
      */
-    public static List<Integer> getRoles() {
+    public static List<String> getRoles() {
         Authentication authentication = getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        List<Integer> roleIds = new ArrayList<>();
-        authorities.stream().filter(granted -> StrUtil.startWith(granted.getAuthority(), SecurityConstant.ROLE))
-                .forEach(granted -> {
-                    String id = StrUtil.removePrefix(granted.getAuthority(), SecurityConstant.ROLE);
-                    roleIds.add(Integer.parseInt(id));
-                });
-        return roleIds;
+        List<String> roleEnNameList = authorities.stream().filter(granted -> StrUtil.startWith(granted.getAuthority(), SecurityConstant.ROLE))
+                .map(granted -> StrUtil.removePrefix(granted.getAuthority(), SecurityConstant.ROLE))
+                .collect(Collectors.toList());
+        return roleEnNameList;
+    }
+
+    /**
+     * 获取用户权限标识信息
+     *
+     * @return 角色集合
+     */
+    public static List<String> getPermissionCode() {
+        Authentication authentication = getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        List<String> permissionList = authorities.stream().filter(granted -> !StrUtil.startWith(granted.getAuthority(), SecurityConstant.ROLE))
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        return permissionList;
     }
 }

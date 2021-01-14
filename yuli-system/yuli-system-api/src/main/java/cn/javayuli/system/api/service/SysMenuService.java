@@ -50,9 +50,10 @@ public interface SysMenuService extends IService<SysMenu> {
      * 根据角色id获取菜单
      *
      * @param idList 角色id
+     * @param types 指定查询的菜单类型
      * @return
      */
-    List<SysMenu> getRoleMenu (List<String> idList);
+    List<SysMenu> getRoleMenu (List<String> idList, List<String> types);
 
     /**
      * 设置递归子菜单

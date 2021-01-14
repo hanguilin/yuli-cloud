@@ -80,4 +80,5 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     List<SysMenu> getUserMenu(String userId);
+
 }
