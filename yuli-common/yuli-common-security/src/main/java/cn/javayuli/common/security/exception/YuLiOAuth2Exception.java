@@ -1,6 +1,6 @@
 package cn.javayuli.common.security.exception;
 
-import cn.javayuli.common.security.config.YuLiAuthExceptionSerializer;
+import cn.javayuli.common.security.exception.handler.YuLiAuthExceptionSerializer;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

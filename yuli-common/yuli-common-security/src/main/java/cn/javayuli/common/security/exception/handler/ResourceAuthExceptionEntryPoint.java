@@ -1,4 +1,4 @@
-package cn.javayuli.common.security.config;
+package cn.javayuli.common.security.exception.handler;
 
 import cn.hutool.http.HttpStatus;
 import cn.javayuli.common.core.entity.Rest;

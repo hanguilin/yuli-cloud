@@ -34,7 +34,6 @@ public class YuLiResourceServerAutoConfiguration {
             return execution.execute(request, body);
         }));
 
-        // 处理400 异常
         restTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
             @Override
             public void handleError(ClientHttpResponse response) throws IOException {

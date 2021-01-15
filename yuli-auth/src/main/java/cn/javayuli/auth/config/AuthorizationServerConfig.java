@@ -2,7 +2,7 @@ package cn.javayuli.auth.config;
 
 import cn.javayuli.common.core.constant.SecurityConstant;
 import cn.javayuli.common.core.entity.YuLiUser;
-import cn.javayuli.common.security.config.YuLiWebResponseExceptionTranslator;
+import cn.javayuli.common.security.exception.handler.YuLiWebResponseExceptionTranslator;
 import cn.javayuli.common.security.service.SysUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -90,7 +90,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public TokenEnhancer tokenEnhancer() {
         return (accessToken, authentication) -> {
-            final Map<String, Object> additionalInfo = new HashMap<>(3);
+            final Map<String, Object> additionalInfo = new HashMap<>(5);
             YuLiUser yuLiUser = (YuLiUser) authentication.getUserAuthentication().getPrincipal();
             additionalInfo.put(SecurityConstant.LICENCE, SecurityConstant.PROJECT_LICENSE);
             additionalInfo.put(SecurityConstant.DETAILS_USER_ID, yuLiUser.getId());

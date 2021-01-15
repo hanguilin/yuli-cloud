@@ -1,5 +1,7 @@
 package cn.javayuli.common.security.config;
 
+import cn.javayuli.common.security.exception.handler.AccessDeniedHandler;
+import cn.javayuli.common.security.exception.handler.ResourceAuthExceptionEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
@@ -58,7 +60,8 @@ public class YuLiResourceServerConfigurerAdapter extends ResourceServerConfigure
         remoteTokenServices.setAccessTokenConverter(accessTokenConverter);
         remoteTokenServices.setRestTemplate(lbRestTemplate);
 
-        resources.authenticationEntryPoint(resourceAuthExceptionEntryPoint)
+        resources
+                .authenticationEntryPoint(resourceAuthExceptionEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
                 .tokenServices(remoteTokenServices)
                 .tokenExtractor(bearerTokenExtractor);

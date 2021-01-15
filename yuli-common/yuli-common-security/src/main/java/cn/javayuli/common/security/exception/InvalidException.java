@@ -1,6 +1,6 @@
 package cn.javayuli.common.security.exception;
 
-import cn.javayuli.common.security.config.YuLiAuthExceptionSerializer;
+import cn.javayuli.common.security.exception.handler.YuLiAuthExceptionSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
