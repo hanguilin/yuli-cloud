@@ -30,6 +30,8 @@ yuli-cloud
      ├── yuli-common-seata -- seata分布式事务配置
      └── yuli-common-sentinel -- sentinel熔断限流配置
 ├── yuli-gateway -- spring cloud gateway 网关服务
+├── yuli-nacos -- spring cloud alibaba nacos 服务注册与配置中心
+├── yuli-sentinel-dashboard -- spring cloud alibaba sentinel 熔断限流控制面板
 └── yuli-system
      └── yuli-system-api -- 系统基础配置接口
      └── yuli-system-ref -- 系统基础配置实体及feign调用，ref即为refrence，表示可被引用的项目
