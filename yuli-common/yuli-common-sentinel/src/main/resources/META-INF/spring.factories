@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    cn.javayuli.common.sentinel.config.SentinelAutoConfiguration
+    cn.javayuli.cloud.common.sentinel.config.SentinelAutoConfiguration

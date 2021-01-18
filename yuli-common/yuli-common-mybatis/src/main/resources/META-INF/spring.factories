@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    cn.javayuli.common.mybatis.config.HikariDataSourceConfig,\
-    cn.javayuli.common.mybatis.handler.MyMetaObjectHandler
+    cn.javayuli.cloud.common.mybatis.config.HikariDataSourceConfig,\
+    cn.javayuli.cloud.common.mybatis.handler.YuLiMetaObjectHandler

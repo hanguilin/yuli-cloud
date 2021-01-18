@@ -12,8 +12,10 @@
         <module>yuli-gateway</module>
         <module>yuli-common</module>
         <module>yuli-auth</module>
-        <module>yuli-test</module>
         <module>yuli-system</module>
+        <module>yuli-code-generator</module>
+        <module>yuli-sentinel-dashboard</module>
+        <module>yuli-nacos</module>
     </modules>
 
     <parent>

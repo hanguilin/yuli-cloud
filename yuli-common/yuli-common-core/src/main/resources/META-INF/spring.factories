@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    cn.javayuli.common.core.util.SpringContextHolder,\
-    cn.javayuli.common.core.component.PasswordEncoderComponent,\
-    cn.javayuli.common.core.exception.handler.GlobalRestErrorHandler
+    cn.javayuli.cloud.common.core.util.SpringContextHolder,\
+    cn.javayuli.cloud.common.core.component.PasswordEncoderComponent,\
+    cn.javayuli.cloud.common.core.exception.handler.GlobalRestErrorHandler,\
+    cn.javayuli.cloud.common.core.cache.RedisCacheConfiguration

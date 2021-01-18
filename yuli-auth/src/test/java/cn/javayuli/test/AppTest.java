@@ -1,6 +1,6 @@
 package cn.javayuli.test;
 
-import cn.javayuli.auth.YuLiAuthApplication;
+import cn.javayuli.cloud.auth.YuLiAuthApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
