@@ -1,9 +1,7 @@
 package cn.javayuli.cloud.generator.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @description: 生成属性定义
@@ -11,14 +9,12 @@ import java.time.LocalDateTime;
  * @createDate: 2021/1/17
  * @version: 1.0
  */
-@TableName("generator_definition")
-public class GeneratorDefinition extends Model<GeneratorDefinition> {
+public class GeneratorDefinition {
 
     /**
-     * 主键id
+     * 数据源名称
      */
-    @TableId(value = "id", type = IdType.ASSIGN_UUID)
-    private String id;
+    private String dataSourceName;
 
     /**
      * 表名
@@ -31,14 +27,34 @@ public class GeneratorDefinition extends Model<GeneratorDefinition> {
     private String className;
 
     /**
+     * 类名首字母小写
+     */
+    private String classNameLower;
+
+    /**
      * 包名
      */
     private String packageName;
 
     /**
+     * 接口包名
+     */
+    private String apiPackage;
+
+    /**
+     * 引用包名
+     */
+    private String referencePackage;
+
+    /**
      * 模块名
      */
     private String moduleName;
+
+    /**
+     * 子模块名
+     */
+    private String subModuleName;
 
     /**
      * 功能描述
@@ -56,110 +72,31 @@ public class GeneratorDefinition extends Model<GeneratorDefinition> {
     private String projectVersion;
 
     /**
-     * 创建时间
+     * 所有字段
      */
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private List<FieldDefinition> fieldList;
 
     /**
-     * 创建人
+     * 类中额外导入的包
      */
-    @TableField(fill = FieldFill.INSERT)
-    private String createBy;
+    private Set<String> importClassList;
 
     /**
-     * 更新时间
+     * 当前时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+    private String now;
 
     /**
-     * 更新人
+     * 网关前缀
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private String updateBy;
+    private String gateWayPrefix;
 
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
-     * 逻辑删除
-     */
-    @TableLogic
-    private String delFlag;
-
-    public String getId(){
-        return id;
+    public String getDataSourceName() {
+        return dataSourceName;
     }
 
-    public void setId(String id){
-        this.id=id;
-    }
-
-    public LocalDateTime getCreateTime(){
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime){
-        this.createTime=createTime;
-    }
-
-    public String getCreateBy(){
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy){
-        this.createBy=createBy;
-    }
-
-    public LocalDateTime getUpdateTime(){
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime){
-        this.updateTime=updateTime;
-    }
-
-    public String getUpdateBy(){
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy){
-        this.updateBy=updateBy;
-    }
-
-    public String getRemark(){
-        return remark;
-    }
-
-    public void setRemark(String remark){
-        this.remark=remark;
-    }
-
-    public String getDelFlag(){
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag){
-        this.delFlag=delFlag;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
+    public void setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
     }
 
     public String getPackageName() {
@@ -176,6 +113,14 @@ public class GeneratorDefinition extends Model<GeneratorDefinition> {
 
     public void setModuleName(String moduleName) {
         this.moduleName = moduleName;
+    }
+
+    public String getSubModuleName() {
+        return subModuleName;
+    }
+
+    public void setSubModuleName(String subModuleName) {
+        this.subModuleName = subModuleName;
     }
 
     public String getComment() {
@@ -200,5 +145,77 @@ public class GeneratorDefinition extends Model<GeneratorDefinition> {
 
     public void setProjectVersion(String projectVersion) {
         this.projectVersion = projectVersion;
+    }
+
+    public List<FieldDefinition> getFieldList() {
+        return fieldList;
+    }
+
+    public void setFieldList(List<FieldDefinition> fieldList) {
+        this.fieldList = fieldList;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getClassNameLower() {
+        return classNameLower;
+    }
+
+    public void setClassNameLower(String classNameLower) {
+        this.classNameLower = classNameLower;
+    }
+
+    public String getApiPackage() {
+        return apiPackage;
+    }
+
+    public void setApiPackage(String apiPackage) {
+        this.apiPackage = apiPackage;
+    }
+
+    public String getReferencePackage() {
+        return referencePackage;
+    }
+
+    public void setReferencePackage(String referencePackage) {
+        this.referencePackage = referencePackage;
+    }
+
+    public Set<String> getImportClassList() {
+        return importClassList;
+    }
+
+    public void setImportClassList(Set<String> importClassList) {
+        this.importClassList = importClassList;
+    }
+
+    public String getNow() {
+        return now;
+    }
+
+    public void setNow(String now) {
+        this.now = now;
+    }
+
+    public String getGateWayPrefix() {
+        return gateWayPrefix;
+    }
+
+    public void setGateWayPrefix(String gateWayPrefix) {
+        this.gateWayPrefix = gateWayPrefix;
     }
 }

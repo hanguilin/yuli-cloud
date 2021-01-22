@@ -1,114 +1,50 @@
-package ${packageName}.${moduleName}.ref.entity;
+package ${packageName!}.${moduleName!}.${referencePackage!}.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-
-import java.time.LocalDateTime;
+<#if importClassList?? && (importClassList?size>0)>
+    <#list importClassList as importClass>
+import ${importClass};
+    </#list>
+</#if>
 
 /**
- * @description: ${comment}实体类
- * @author: ${author}
- * @createDate: ${now}
- * @version: ${projectVersion}
+ * @description: ${comment!}实体类
+ * @author: ${author!}
+ * @createDate: ${now!}
+ * @version: ${projectVersion!}
  */
-@TableName("${table}")
-public class ${className} extends Model<${className}> {
+@TableName("${tableName!}")
+public class ${className!} extends Model<${className!}> {
 
+<#list fieldList as field>
     /**
-     * 主键id
+     * ${field.comment}
      */
-    @TableId(value = "id", type = IdType.ASSIGN_UUID)
-    private String id;
-
-    /**
-     * 创建时间
-     */
+    <#if field.primary>
+    @TableId<#if field.autoincrement>(type = IdType.AUTO)<#else>(type = IdType.ASSIGN_UUID)</#if>
+    </#if>
+    <#if field.nameLower=="createTime">
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    /**
-     * 创建人
-     */
+    <#elseif field.nameLower=="createBy">
     @TableField(fill = FieldFill.INSERT)
-    private String createBy;
-
-    /**
-     * 更新时间
-     */
+    <#elseif field.nameLower=="updateTime">
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
-
-    /**
-     * 更新人
-     */
+    <#elseif field.nameLower=="updateBy">
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private String updateBy;
-
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
-     * 逻辑删除
-     */
+    <#elseif field.nameLower=="delFlag">
     @TableLogic
-    private String delFlag;
+    </#if>
+    private ${field.type} ${field.nameLower};
+</#list>
 
-    public String getId(){
-        return id;
+<#list fieldList as field>
+    public ${field.type} get${field.name}(){
+        return ${field.nameLower};
     }
 
-    public void setId(String id){
-        this.id=id;
+    public void ${(field.type == 'Boolean') ? string('is','set')}${field.name}(${field.type} ${field.nameLower}){
+        this.${field.nameLower} = ${field.nameLower};
     }
-
-    public LocalDateTime getCreateTime(){
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime){
-        this.createTime=createTime;
-    }
-
-    public String getCreateBy(){
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy){
-        this.createBy=createBy;
-    }
-
-    public LocalDateTime getUpdateTime(){
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime){
-        this.updateTime=updateTime;
-    }
-
-    public String getUpdateBy(){
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy){
-        this.updateBy=updateBy;
-    }
-
-    public String getRemark(){
-        return remark;
-    }
-
-    public void setRemark(String remark){
-        this.remark=remark;
-    }
-
-    public String getDelFlag(){
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag){
-        this.delFlag=delFlag;
-    }
-
+</#list>
 }

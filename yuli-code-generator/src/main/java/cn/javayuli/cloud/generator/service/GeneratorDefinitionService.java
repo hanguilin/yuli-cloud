@@ -1,14 +1,23 @@
 package cn.javayuli.cloud.generator.service;
 
 import cn.javayuli.cloud.generator.entity.GeneratorDefinition;
-import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.io.IOException;
 
 /**
- * @description: 生成属性定义业务接口
+ * @description: 代码生成业务类
  * @author: HanGuiLin
- * @createDate: 2021/1/17
+ * @createDate: 2021/1/18
  * @version: 1.0
  */
-public interface GeneratorDefinitionService extends IService<GeneratorDefinition> {
+public interface GeneratorDefinitionService {
 
-        }
+    /**
+     * 根据配置生成代码并包装成byte数组
+     *
+     * @param generatorDefinition 生成描述
+     * @return
+     * @throws IOException
+     */
+    byte[] getCodeByte(GeneratorDefinition generatorDefinition) throws IOException;
+}
