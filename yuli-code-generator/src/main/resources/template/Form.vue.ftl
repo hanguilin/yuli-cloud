@@ -47,7 +47,7 @@ export default {
       method: '',
       inputForm: {
         <#list fieldList as field>
-        ${field.nameLower}: ''${(field_index < fieldList?size) ? string(",", "")}
+        ${field.nameLower}: ''${(field_index < (fieldList?size - 1)) ? string(",", "")}
         </#list>
       },
       dataRule: {
@@ -57,7 +57,6 @@ export default {
   methods: {
     init (method, id) {
       this.method = method
-      this.inputForm.id = id
       if (method === 'save') {
         this.title = '新增${comment}'
       } else if (method === 'update') {
@@ -68,9 +67,10 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         this.$refs.inputForm.resetFields()
+        this.inputForm.id = id
         // 修改或者查看
         if (method === 'update' || method === 'info') {
-          this.$http.get(`${(gateWayPrefix??)?string("", gateWayPrefix)}/${moduleName}/${classNameLower}/info/${this.inputForm.id}`).then(({ data }) => {
+          this.$http.get(`${((gateWayPrefix!"")?length gt 1)?string("/" + gateWayPrefix, "")}/${classNameLower}/info/${r'${this.inputForm.id}'}`).then(({ data }) => {
             if (data && data.code === 200) {
               this.inputForm = this.$util.recover(this.inputForm, data.data)
             }
@@ -85,9 +85,9 @@ export default {
           this.loading = true
           let request
           if (this.method === 'update') {
-            request = this.$http.put('${(gateWayPrefix??)?string("", gateWayPrefix)}/${moduleName}/${classNameLower}/update', this.inputForm)
+            request = this.$http.put('${((gateWayPrefix!"")?length gt 1)?string("/" + gateWayPrefix, "")}/${classNameLower}/update', this.inputForm)
           } else {
-            request = this.$http.post('${(gateWayPrefix??)?string("", gateWayPrefix)}/${moduleName}/${classNameLower}/save', this.inputForm)
+            request = this.$http.post('${((gateWayPrefix!"")?length gt 1)?string("/" + gateWayPrefix, "")}/${classNameLower}/save', this.inputForm)
           }
           request.then(({ data }) => {
             if (data && data.code === 200) {

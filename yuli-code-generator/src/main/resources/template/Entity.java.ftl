@@ -46,5 +46,6 @@ public class ${className!} extends Model<${className!}> {
     public void ${(field.type == 'Boolean') ? string('is','set')}${field.name}(${field.type} ${field.nameLower}){
         this.${field.nameLower} = ${field.nameLower};
     }
+
 </#list>
 }

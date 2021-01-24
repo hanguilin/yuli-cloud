@@ -1,5 +1,6 @@
 package cn.javayuli.cloud.generator;
 
+import cn.javayuli.cloud.common.datasource.annotation.EnableYuLiDynamicDatasource;
 import cn.javayuli.cloud.common.security.annotation.EnableYuLiResourceServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
@@ -10,6 +11,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * @createDate: 2021/1/17
  * @version: 1.0
  */
+@EnableYuLiDynamicDatasource
 @EnableYuLiResourceServer
 @SpringCloudApplication
 public class YuLiGeneratorApplication {

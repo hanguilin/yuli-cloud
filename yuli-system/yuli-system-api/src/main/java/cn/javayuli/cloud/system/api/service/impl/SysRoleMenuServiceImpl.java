@@ -1,6 +1,7 @@
 package cn.javayuli.cloud.system.api.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.javayuli.cloud.common.core.constant.CacheNames;
 import cn.javayuli.cloud.common.core.entity.Rest;
 import cn.javayuli.cloud.system.api.mapper.SysRoleMenuMapper;
 import cn.javayuli.cloud.system.api.service.SysRoleMenuService;
@@ -9,6 +10,7 @@ import cn.javayuli.cloud.system.ref.entity.SysRoleMenu;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Splitter;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
      * @param sysRole 角色
      * @return
      */
+    @CacheEvict(value = CacheNames.USER_DETAILS, allEntries = true)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Rest<Boolean> updateRoleMenu(SysRole sysRole) {

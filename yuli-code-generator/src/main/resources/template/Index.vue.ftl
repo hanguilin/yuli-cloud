@@ -36,7 +36,7 @@
                  type="danger"
                  size="small"
                  icon="el-icon-delete"
-                 @click="delete()"
+                 @click="del"
                  :disabled="dataListSelections.length <= 0"
                  plain>删除
       </el-button>
@@ -103,7 +103,7 @@
                      v-if="hasPermission('${moduleName!}:${classNameLower!}:delete')"
                      type="text"
                      size="small"
-                     @click="delete(scope.row.id)">
+                     @click="del(scope.row.id)">
             删除
           </el-button>
         </template>
@@ -120,7 +120,7 @@
     </el-pagination>
 
     <!-- 增、改、查 -->
-    <${className}Form ref="${classNameLower}Form"></${className}Form>
+    <${className}Form ref="${classNameLower}Form" @refreshDataList="refreshList"></${className}Form>
 
   </div>
 </template>
@@ -154,7 +154,7 @@ export default {
     // 获取数据列表
     refreshList () {
       this.loading = true
-      this.$http.get('${(gateWayPrefix??)?string("", gateWayPrefix)}/${moduleName}/${classNameLower}/page', {
+      this.$http.get('${((gateWayPrefix!"")?length gt 1)?string("/" + gateWayPrefix, "")}/${classNameLower}/page', {
         params: {
           current: this.current,
           size: this.size
@@ -184,7 +184,7 @@ export default {
     },
     // 新增
     add () {
-      this.$refs.${classNameLower}Form.init('add', '')
+      this.$refs.${classNameLower}Form.init('save', '')
     },
     // 修改
     update (id) {
@@ -198,7 +198,7 @@ export default {
       this.$refs.${classNameLower}Form.init('info', id)
     },
     // 删除
-    delete (id) {
+    del (id) {
       const ids = id || this.dataListSelections.map(item => {
         return item.id
       }).join(',')
@@ -207,7 +207,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$http.delete('${(gateWayPrefix??)?string("", gateWayPrefix)}/${moduleName}/${classNameLower}/delete', { params: { ids } }).then(({ data }) => {
+        this.$http.delete('${((gateWayPrefix!"")?length gt 1)?string("/" + gateWayPrefix, "")}/${classNameLower}/delete', { params: { ids } }).then(({ data }) => {
           if (data && data.code === 200) {
             this.$message.success(data.msg)
             this.refreshList()

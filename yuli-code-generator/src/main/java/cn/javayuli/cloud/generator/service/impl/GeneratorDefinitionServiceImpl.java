@@ -13,8 +13,10 @@ import cn.javayuli.cloud.common.core.util.SpringContextHolder;
 import cn.javayuli.cloud.generator.entity.FieldDefinition;
 import cn.javayuli.cloud.generator.entity.GeneratorDefinition;
 import cn.javayuli.cloud.generator.mapper.DbMapper;
+import cn.javayuli.cloud.generator.mapper.GeneratorDefinitionMapper;
 import cn.javayuli.cloud.generator.properties.GenerateProperties;
 import cn.javayuli.cloud.generator.service.GeneratorDefinitionService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ import java.util.zip.ZipOutputStream;
  * @version: 1.0
  */
 @Service
-public class GeneratorDefinitionServiceImpl implements GeneratorDefinitionService {
+public class GeneratorDefinitionServiceImpl extends ServiceImpl<GeneratorDefinitionMapper, GeneratorDefinition> implements GeneratorDefinitionService {
 
     /**
      * 模板根路径
@@ -114,7 +116,7 @@ public class GeneratorDefinitionServiceImpl implements GeneratorDefinitionServic
         }
         String tableName = generatorDefinition.getTableName();
         // 查询表列信息
-        List<Map<String, Object>> columnInfoList = dbMapper.queryColumns(tableName);
+        List<Map<String, Object>> columnInfoList = dbMapper.queryColumns(tableName, generatorDefinition.getDsName());
         if (CollUtil.isEmpty(columnInfoList)) {
             return new byte[0];
         }
@@ -207,6 +209,11 @@ public class GeneratorDefinitionServiceImpl implements GeneratorDefinitionServic
         // 当前时间
         generatorDefinition.setNow(LocalDateTimeUtil.format(LocalDate.now(), DatePattern.CHINESE_DATE_PATTERN));
         String tableName = generatorDefinition.getTableName();
+        // 去除表前缀
+        String tablePrefix = generatorDefinition.getTablePrefix();
+        if (StrUtil.isNotBlank(tablePrefix) && tableName.startsWith(tablePrefix)) {
+            tableName = tableName.replaceFirst(tablePrefix, "");
+        }
         // 类名首字母大写
         generatorDefinition.setClassName(columnToPropertyFirstUpper(tableName));
         // 类名首字母小写

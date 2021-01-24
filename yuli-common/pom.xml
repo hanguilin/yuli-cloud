@@ -17,6 +17,7 @@
         <module>yuli-common-core</module>
         <module>yuli-common-security</module>
         <module>yuli-common-sentinel</module>
+        <module>yuli-common-datasource</module>
     </modules>
 
 

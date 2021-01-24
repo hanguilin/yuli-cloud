@@ -1,5 +1,9 @@
 package cn.javayuli.cloud.generator.entity;
 
+import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -9,12 +13,11 @@ import java.util.Set;
  * @createDate: 2021/1/17
  * @version: 1.0
  */
-public class GeneratorDefinition {
+@TableName("generator_definition")
+public class GeneratorDefinition extends Model<GeneratorDefinition> {
 
-    /**
-     * 数据源名称
-     */
-    private String dataSourceName;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 表名
@@ -22,29 +25,9 @@ public class GeneratorDefinition {
     private String tableName;
 
     /**
-     * 类名
-     */
-    private String className;
-
-    /**
-     * 类名首字母小写
-     */
-    private String classNameLower;
-
-    /**
      * 包名
      */
     private String packageName;
-
-    /**
-     * 接口包名
-     */
-    private String apiPackage;
-
-    /**
-     * 引用包名
-     */
-    private String referencePackage;
 
     /**
      * 模块名
@@ -62,6 +45,16 @@ public class GeneratorDefinition {
     private String comment;
 
     /**
+     * 网关前缀
+     */
+    private String gateWayPrefix;
+
+    /**
+     * 表前缀
+     */
+    private String tablePrefix;
+
+    /**
      * 作者
      */
     private String author;
@@ -72,31 +65,98 @@ public class GeneratorDefinition {
     private String projectVersion;
 
     /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+    /**
+     * 创建人
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private String createBy;
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
+    /**
+     * 更新人
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String updateBy;
+    /**
+     * 备注
+     */
+    private String remark;
+    /**
+     *
+     */
+    @TableLogic
+    private String delFlag;
+
+    /**
+     * 数据源名称
+     */
+    @TableField(exist = false)
+    private String dsName;
+
+    /**
+     * 类名
+     */
+    @TableField(exist = false)
+    private String className;
+
+    /**
+     * 类名首字母小写
+     */
+    @TableField(exist = false)
+    private String classNameLower;
+
+    /**
+     * 接口包名
+     */
+    @TableField(exist = false)
+    private String apiPackage;
+
+    /**
+     * 引用包名
+     */
+    @TableField(exist = false)
+    private String referencePackage;
+
+    /**
      * 所有字段
      */
+    @TableField(exist = false)
     private List<FieldDefinition> fieldList;
 
     /**
      * 类中额外导入的包
      */
+    @TableField(exist = false)
     private Set<String> importClassList;
 
     /**
      * 当前时间
      */
+    @TableField(exist = false)
     private String now;
 
-    /**
-     * 网关前缀
-     */
-    private String gateWayPrefix;
 
-    public String getDataSourceName() {
-        return dataSourceName;
+    public String getId() {
+        return id;
     }
 
-    public void setDataSourceName(String dataSourceName) {
-        this.dataSourceName = dataSourceName;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDsName() {
+        return dsName;
+    }
+
+    public void setDsName(String dsName) {
+        this.dsName = dsName;
     }
 
     public String getPackageName() {
@@ -217,5 +277,61 @@ public class GeneratorDefinition {
 
     public void setGateWayPrefix(String gateWayPrefix) {
         this.gateWayPrefix = gateWayPrefix;
+    }
+
+    public String getTablePrefix() {
+        return tablePrefix;
+    }
+
+    public void setTablePrefix(String tablePrefix) {
+        this.tablePrefix = tablePrefix;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
     }
 }

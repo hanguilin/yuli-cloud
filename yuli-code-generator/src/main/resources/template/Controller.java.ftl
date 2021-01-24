@@ -47,7 +47,7 @@ public class ${className!}Controller {
     @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:save')")
     @PostMapping("/save")
     public Rest<${className!}> doSave(@RequestBody ${className!} ${classNameLower!}) {
-        return ${classNameLower!}Service.save(${classNameLower!}) ? Rest.success(${classNameLower!}) : Rest.fail("保存失败");
+        return ${classNameLower!}Service.save(${classNameLower!}) ? Rest.success("保存${comment!}成功", ${classNameLower!}) : Rest.fail("保存${comment!}失败");
     }
 
     /**
@@ -59,7 +59,7 @@ public class ${className!}Controller {
     @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:update')")
     @PutMapping("/update")
     public Rest<Boolean> doUpdate(@RequestBody ${className!} ${classNameLower!}) {
-        return ${classNameLower!}Service.updateById(${classNameLower!}) ? Rest.success() : Rest.fail("更新失败");
+        return ${classNameLower!}Service.updateById(${classNameLower!}) ? Rest.success("更新${comment!}成功") : Rest.fail("更新${comment!}失败");
     }
 
     /**
@@ -73,7 +73,7 @@ public class ${className!}Controller {
     public Rest<Boolean> doDelete(@RequestParam String ids) {
         List<String> idList = Splitter.on(",").splitToList(ids);
         ${classNameLower!}Service.removeByIds(idList);
-        return Rest.success();
+        return Rest.success("删除${comment!}成功");
     }
 
     /**
