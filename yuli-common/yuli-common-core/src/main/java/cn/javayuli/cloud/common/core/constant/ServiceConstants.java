@@ -5,10 +5,15 @@ package cn.javayuli.cloud.common.core.constant;
  *
  * @author hanguilin
  */
-public interface ServiceConstant {
+public interface ServiceConstants {
 
     /**
      * 系统服务
      */
     String SYSTEM_API = "yuli-system-api";
+
+    /**
+     * 认证服务
+     */
+    String AUTH = "yuli-auth";
 }

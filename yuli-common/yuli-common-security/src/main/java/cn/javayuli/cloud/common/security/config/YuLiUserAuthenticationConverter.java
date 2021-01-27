@@ -1,6 +1,6 @@
 package cn.javayuli.cloud.common.security.config;
 
-import cn.javayuli.cloud.common.core.constant.SecurityConstant;
+import cn.javayuli.cloud.common.core.constant.SecurityConstants;
 import cn.javayuli.cloud.common.core.entity.YuLiUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,7 +32,7 @@ public class YuLiUserAuthenticationConverter implements UserAuthenticationConver
 	@Override
 	public Map<String, ?> convertUserAuthentication(Authentication authentication) {
 		Map<String, Object> response = new LinkedHashMap<>();
-		response.put(SecurityConstant.DETAILS_USERNAME, authentication.getName());
+		response.put(SecurityConstants.DETAILS_USERNAME, authentication.getName());
 		if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
 			response.put(AUTHORITIES, AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
 		}
@@ -48,14 +48,14 @@ public class YuLiUserAuthenticationConverter implements UserAuthenticationConver
 	@Override
 	public Authentication extractAuthentication(Map<String, ?> map) {
 		// 判断map中是否含有特定的值，需要需上方方法的key一致
-		if (map.containsKey(SecurityConstant.DETAILS_USERNAME)) {
+		if (map.containsKey(SecurityConstants.DETAILS_USERNAME)) {
 			// 获取用户权限
 			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
 
-			String id = (String) map.get(SecurityConstant.DETAILS_USER_ID);
-			String username = (String) map.get(SecurityConstant.DETAILS_USERNAME);
-			String nickname = (String) map.get(SecurityConstant.DETAILS_USERNAME);
-			String enabled = (String) map.get(SecurityConstant.DETAILS_ENABLED);
+			String id = (String) map.get(SecurityConstants.DETAILS_USER_ID);
+			String username = (String) map.get(SecurityConstants.DETAILS_USERNAME);
+			String nickname = (String) map.get(SecurityConstants.DETAILS_USERNAME);
+			String enabled = (String) map.get(SecurityConstants.DETAILS_ENABLED);
 			YuLiUser user = new YuLiUser(id, username, N_A, nickname, enabled, authorities);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);
 		}

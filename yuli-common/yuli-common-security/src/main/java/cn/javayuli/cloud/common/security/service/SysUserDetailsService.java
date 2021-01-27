@@ -3,7 +3,7 @@ package cn.javayuli.cloud.common.security.service;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.javayuli.cloud.common.core.constant.CacheNames;
-import cn.javayuli.cloud.common.core.constant.SecurityConstant;
+import cn.javayuli.cloud.common.core.constant.SecurityConstants;
 import cn.javayuli.cloud.common.core.entity.Rest;
 import cn.javayuli.cloud.common.core.entity.YuLiUser;
 import cn.javayuli.cloud.system.ref.entity.SysMenu;
@@ -65,7 +65,7 @@ public class SysUserDetailsService implements UserDetailsService {
      * @return
      */
     private UserDetails getUserDetails(String username){
-        Rest<SysUser> userRest = remoteUserService.doGetUserPermission(username, SecurityConstant.SOURCE_IN);
+        Rest<SysUser> userRest = remoteUserService.doGetUserPermission(username, SecurityConstants.SOURCE_IN);
         SysUser sysUser = userRest.getData();
         if (userRest == null || sysUser == null) {
             throw new UsernameNotFoundException("用户不存在");
@@ -77,7 +77,7 @@ public class SysUserDetailsService implements UserDetailsService {
         // 菜单列表
         List<SysMenu> menuList = sysUser.getMenuList();
         if (CollUtil.isNotEmpty(roleList)) {
-            Set<String> roleSet = roleList.stream().filter(o -> StrUtil.isNotBlank(o.getEnName())).map(o -> SecurityConstant.ROLE + o.getEnName()).collect(Collectors.toSet());
+            Set<String> roleSet = roleList.stream().filter(o -> StrUtil.isNotBlank(o.getEnName())).map(o -> SecurityConstants.ROLE + o.getEnName()).collect(Collectors.toSet());
             authSet.addAll(roleSet);
         }
         if (CollUtil.isNotEmpty(menuList)) {

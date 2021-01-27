@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.base.Splitter;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict/type")
+@Api("字典类型")
 public class SysDictTypeController {
 
     @Autowired
@@ -35,6 +38,7 @@ public class SysDictTypeController {
      * @param id 主键id
      * @return
      */
+    @ApiOperation("根据id查询数据")
     @GetMapping("/info/{id}")
     public Rest<SysDictType> doInfo(@PathVariable("id") String id) {
         return sysDictTypeService.getInfo(id);

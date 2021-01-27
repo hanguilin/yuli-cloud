@@ -1,7 +1,7 @@
 package cn.javayuli.cloud.system.ref.feign;
 
-import cn.javayuli.cloud.common.core.constant.SecurityConstant;
-import cn.javayuli.cloud.common.core.constant.ServiceConstant;
+import cn.javayuli.cloud.common.core.constant.SecurityConstants;
+import cn.javayuli.cloud.common.core.constant.ServiceConstants;
 import cn.javayuli.cloud.common.core.entity.Rest;
 import cn.javayuli.cloud.system.ref.entity.SysUser;
 import cn.javayuli.cloud.system.ref.feign.factory.RemoteUserServiceFallbackFactory;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author hanguilin
  */
-@FeignClient(path = "/user", contextId = "remoteUserService", value = ServiceConstant.SYSTEM_API,
+@FeignClient(path = "/user", contextId = "remoteUserService", value = ServiceConstants.SYSTEM_API,
         fallbackFactory = RemoteUserServiceFallbackFactory.class)
 public interface RemoteUserService {
 
@@ -28,5 +28,5 @@ public interface RemoteUserService {
      * @return
      */
     @GetMapping("/permission")
-    Rest<SysUser> doGetUserPermission(@RequestParam("username") String username, @RequestHeader(SecurityConstant.SOURCE) String source);
+    Rest<SysUser> doGetUserPermission(@RequestParam("username") String username, @RequestHeader(SecurityConstants.SOURCE) String source);
 }

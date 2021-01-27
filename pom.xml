@@ -13,9 +13,8 @@
         <module>yuli-common</module>
         <module>yuli-auth</module>
         <module>yuli-system</module>
-        <module>yuli-code-generator</module>
-        <module>yuli-sentinel-dashboard</module>
         <module>yuli-nacos</module>
+        <module>yuli-auxiliary</module>
     </modules>
 
     <parent>
@@ -32,6 +31,8 @@
         <hutool.version>5.3.10</hutool.version>
         <dynamic-datasource.version>3.2.1</dynamic-datasource.version>
         <jasypt.version>2.1.0</jasypt.version>
+        <swagger.fox.version>2.9.2</swagger.fox.version>
+        <swagger.core.version>1.5.24</swagger.core.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -81,6 +82,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

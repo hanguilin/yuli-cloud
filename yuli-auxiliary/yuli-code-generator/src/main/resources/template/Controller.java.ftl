@@ -9,6 +9,8 @@ import com.google.common.base.Splitter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
  * @createDate: ${now!}
  * @version: ${projectVersion!}
  */
+@Api(${comment!})
 @RestController
 @RequestMapping("/${classNameLower!}")
 public class ${className!}Controller {
@@ -31,6 +34,7 @@ public class ${className!}Controller {
     * @param id 主键id
     * @return
     */
+    @ApiOperation("根据id查询${comment!}")
     @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:info')")
     @GetMapping("/info/{id}")
     public Rest<${className!}> doInfo(@PathVariable("id") String id) {
@@ -44,6 +48,7 @@ public class ${className!}Controller {
      * @param ${classNameLower!} ${comment!}
      * @return
      */
+    @ApiOperation("保存${comment!}")
     @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:save')")
     @PostMapping("/save")
     public Rest<${className!}> doSave(@RequestBody ${className!} ${classNameLower!}) {
@@ -56,6 +61,7 @@ public class ${className!}Controller {
      * @param ${classNameLower!} ${comment!}
      * @return
      */
+    @ApiOperation("更新${comment!}")
     @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:update')")
     @PutMapping("/update")
     public Rest<Boolean> doUpdate(@RequestBody ${className!} ${classNameLower!}) {
@@ -68,6 +74,7 @@ public class ${className!}Controller {
     * @param ids 主键id
     * @return
     */
+    @ApiOperation("删除${comment!}")
     @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:delete')")
     @DeleteMapping("/delete")
     public Rest<Boolean> doDelete(@RequestParam String ids) {
@@ -83,6 +90,7 @@ public class ${className!}Controller {
      * @param ${classNameLower!} ${comment!}
      * @return
      */
+    @ApiOperation("分页查询${comment!}")
     @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:page')")
     @GetMapping("/page")
     public Rest<Page<${className!}>> doPage(Page page, ${className!} ${classNameLower!}) {

@@ -1,7 +1,7 @@
 package cn.javayuli.cloud.common.security.feign;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.javayuli.cloud.common.core.constant.SecurityConstant;
+import cn.javayuli.cloud.common.core.constant.SecurityConstants;
 import feign.RequestTemplate;
 import org.springframework.cloud.security.oauth2.client.feign.OAuth2FeignRequestInterceptor;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
@@ -25,8 +25,8 @@ public class OAuth2FeignClientInterceptor extends OAuth2FeignRequestInterceptor 
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        Collection<String> fromHeader = requestTemplate.headers().get(SecurityConstant.SOURCE);
-        if (CollUtil.isNotEmpty(fromHeader) && fromHeader.contains(SecurityConstant.SOURCE_IN)) {
+        Collection<String> fromHeader = requestTemplate.headers().get(SecurityConstants.SOURCE);
+        if (CollUtil.isNotEmpty(fromHeader) && fromHeader.contains(SecurityConstants.SOURCE_IN)) {
             return;
         }
         if (oAuth2ClientContext != null && oAuth2ClientContext.getAccessToken() != null) {

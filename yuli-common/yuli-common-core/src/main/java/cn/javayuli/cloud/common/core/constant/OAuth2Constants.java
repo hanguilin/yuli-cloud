@@ -5,7 +5,7 @@ package cn.javayuli.cloud.common.core.constant;
  *
  * @author hanguilin
  */
-public interface OAuth2Constant {
+public interface OAuth2Constants {
 
     String TOKEN_PREFIX = "yuli-auth:";
 }

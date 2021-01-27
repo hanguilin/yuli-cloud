@@ -5,7 +5,7 @@ package cn.javayuli.cloud.common.core.constant;
  *
  * @author hanguilin
  */
-public interface SecurityConstant {
+public interface SecurityConstants {
 
     /**
      * 通行证字段

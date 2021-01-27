@@ -5,7 +5,7 @@ package cn.javayuli.cloud.common.core.constant;
  *
  * @author hanguilin
  */
-public interface FlagConstant {
+public interface FlagConstants {
 
     /**
      * 真，是，可见，启用

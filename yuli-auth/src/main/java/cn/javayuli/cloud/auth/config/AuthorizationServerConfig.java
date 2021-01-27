@@ -1,6 +1,6 @@
 package cn.javayuli.cloud.auth.config;
 
-import cn.javayuli.cloud.common.core.constant.SecurityConstant;
+import cn.javayuli.cloud.common.core.constant.SecurityConstants;
 import cn.javayuli.cloud.common.core.entity.YuLiUser;
 import cn.javayuli.cloud.common.security.exception.handler.YuLiWebResponseExceptionTranslator;
 import cn.javayuli.cloud.common.security.service.SysUserDetailsService;
@@ -92,11 +92,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return (accessToken, authentication) -> {
             final Map<String, Object> additionalInfo = new HashMap<>(5);
             YuLiUser yuLiUser = (YuLiUser) authentication.getUserAuthentication().getPrincipal();
-            additionalInfo.put(SecurityConstant.LICENCE, SecurityConstant.PROJECT_LICENSE);
-            additionalInfo.put(SecurityConstant.DETAILS_USER_ID, yuLiUser.getId());
-            additionalInfo.put(SecurityConstant.DETAILS_USERNAME, yuLiUser.getUsername());
-            additionalInfo.put(SecurityConstant.DETAILS_NICKNAME, yuLiUser.getNickname());
-            additionalInfo.put(SecurityConstant.DETAILS_ENABLED, yuLiUser.getEnabled());
+            additionalInfo.put(SecurityConstants.LICENCE, SecurityConstants.PROJECT_LICENSE);
+            additionalInfo.put(SecurityConstants.DETAILS_USER_ID, yuLiUser.getId());
+            additionalInfo.put(SecurityConstants.DETAILS_USERNAME, yuLiUser.getUsername());
+            additionalInfo.put(SecurityConstants.DETAILS_NICKNAME, yuLiUser.getNickname());
+            additionalInfo.put(SecurityConstants.DETAILS_ENABLED, yuLiUser.getEnabled());
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             return accessToken;
         };

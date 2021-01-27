@@ -1,7 +1,7 @@
 package cn.javayuli.cloud.common.core.util;
 
 import cn.hutool.core.util.StrUtil;
-import cn.javayuli.cloud.common.core.constant.SecurityConstant;
+import cn.javayuli.cloud.common.core.constant.SecurityConstants;
 import cn.javayuli.cloud.common.core.entity.YuLiUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,8 +56,8 @@ public class YuLiSecurityUtil {
         Authentication authentication = getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        List<String> roleEnNameList = authorities.stream().filter(granted -> StrUtil.startWith(granted.getAuthority(), SecurityConstant.ROLE))
-                .map(granted -> StrUtil.removePrefix(granted.getAuthority(), SecurityConstant.ROLE))
+        List<String> roleEnNameList = authorities.stream().filter(granted -> StrUtil.startWith(granted.getAuthority(), SecurityConstants.ROLE))
+                .map(granted -> StrUtil.removePrefix(granted.getAuthority(), SecurityConstants.ROLE))
                 .collect(Collectors.toList());
         return roleEnNameList;
     }
@@ -71,7 +71,7 @@ public class YuLiSecurityUtil {
         Authentication authentication = getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        List<String> permissionList = authorities.stream().filter(granted -> !StrUtil.startWith(granted.getAuthority(), SecurityConstant.ROLE))
+        List<String> permissionList = authorities.stream().filter(granted -> !StrUtil.startWith(granted.getAuthority(), SecurityConstants.ROLE))
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         return permissionList;

@@ -1,6 +1,6 @@
 package cn.javayuli.cloud.auth.config;
 
-import cn.javayuli.cloud.common.core.constant.SecurityConstant;
+import cn.javayuli.cloud.common.core.constant.SecurityConstants;
 import cn.javayuli.cloud.common.security.handler.FormAuthenticationFailureHandler;
 import cn.javayuli.cloud.common.security.handler.FormAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage(SecurityConstant.LOGIN_URL).loginProcessingUrl(SecurityConstant.LOGIN_FORM)
+        http.formLogin().loginPage(SecurityConstants.LOGIN_URL).loginProcessingUrl(SecurityConstants.LOGIN_FORM)
                 .failureHandler(authenticationFailureHandler())
                 .successHandler(authenticationSuccessHandler())
                 .and().authorizeRequests().antMatchers("/token/**", "/actuator/**").permitAll().anyRequest().authenticated()

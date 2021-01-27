@@ -1,6 +1,6 @@
 package cn.javayuli.cloud.auth.config;
 
-import cn.javayuli.cloud.common.core.constant.OAuth2Constant;
+import cn.javayuli.cloud.common.core.constant.OAuth2Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ public class RedisTokenStoreConfig {
     @Bean
     public TokenStore redisTokenStore (){
         RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
-        redisTokenStore.setPrefix(OAuth2Constant.TOKEN_PREFIX);
+        redisTokenStore.setPrefix(OAuth2Constants.TOKEN_PREFIX);
         return redisTokenStore;
     }
 }

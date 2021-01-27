@@ -1,6 +1,6 @@
 package cn.javayuli.cloud.common.core.entity;
 
-import cn.javayuli.cloud.common.core.constant.FlagConstant;
+import cn.javayuli.cloud.common.core.constant.FlagConstants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -32,7 +32,7 @@ public class YuLiUser extends User implements Serializable {
     private String enabled;
 
     public YuLiUser(String id, String username, String password, String nickname, String enabled, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, FlagConstant.TRUE.equals(enabled), true, true, true, authorities);
+        super(username, password, FlagConstants.TRUE.equals(enabled), true, true, true, authorities);
         this.id = id;
         this.nickname = nickname;
         this.enabled = enabled;

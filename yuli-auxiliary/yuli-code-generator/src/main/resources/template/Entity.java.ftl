@@ -2,6 +2,7 @@ package ${packageName!}.${moduleName!}.${referencePackage!}.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModelProperty;
 <#if importClassList?? && (importClassList?size>0)>
     <#list importClassList as importClass>
 import ${importClass};
@@ -35,6 +36,7 @@ public class ${className!} extends Model<${className!}> {
     <#elseif field.nameLower=="delFlag">
     @TableLogic
     </#if>
+    @ApiModelProperty(${field.comment})
     private ${field.type} ${field.nameLower};
 </#list>
 

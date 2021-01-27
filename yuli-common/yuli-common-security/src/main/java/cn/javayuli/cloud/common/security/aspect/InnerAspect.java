@@ -1,7 +1,7 @@
 package cn.javayuli.cloud.common.security.aspect;
 
 import cn.hutool.core.util.StrUtil;
-import cn.javayuli.cloud.common.core.constant.SecurityConstant;
+import cn.javayuli.cloud.common.core.constant.SecurityConstants;
 import cn.javayuli.cloud.common.security.annotation.Inner;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -36,9 +36,9 @@ public class InnerAspect {
 	 */
 	@Around("@annotation(inner)")
 	public Object around(ProceedingJoinPoint point, Inner inner) throws Throwable {
-		String header = request.getHeader(SecurityConstant.SOURCE);
+		String header = request.getHeader(SecurityConstants.SOURCE);
 		// 当inner设置为仅内部访问，且头部没有内部访问标识符时抛出错误
-		if (inner.value() && !StrUtil.equals(SecurityConstant.SOURCE_IN, header)) {
+		if (inner.value() && !StrUtil.equals(SecurityConstants.SOURCE_IN, header)) {
 			LOGGER.warn("访问接口 {} 没有权限", point.getSignature().getName());
 			throw new AccessDeniedException("Access is denied");
 		}
