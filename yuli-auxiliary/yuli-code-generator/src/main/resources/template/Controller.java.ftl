@@ -20,7 +20,7 @@ import java.util.List;
  * @createDate: ${now!}
  * @version: ${projectVersion!}
  */
-@Api(${comment!})
+@Api(description = ${comment!})
 @RestController
 @RequestMapping("/${classNameLower!}")
 public class ${className!}Controller {

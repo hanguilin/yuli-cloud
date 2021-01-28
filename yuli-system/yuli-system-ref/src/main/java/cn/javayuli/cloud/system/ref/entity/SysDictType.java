@@ -2,6 +2,8 @@ package cn.javayuli.cloud.system.ref.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
  *
  * @author hanguilin
  */
+@ApiModel("字典类型")
 @TableName("sys_dict_type")
 public class SysDictType extends Model<SysDictType> {
 
@@ -20,25 +23,33 @@ public class SysDictType extends Model<SysDictType> {
     /**
      * 类型
      */
+    @ApiModelProperty("类型")
     private String type;
 
+    @ApiModelProperty("创建时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
+    @ApiModelProperty("创建人id")
     @TableField(fill = FieldFill.INSERT)
     private String createBy;
 
+    @ApiModelProperty("更新时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    @ApiModelProperty("更新人id")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private String updateBy;
 
+    @ApiModelProperty("备注")
     private String remark;
 
+    @ApiModelProperty("逻辑删除")
     @TableLogic
     private String delFlag;
 
+    @ApiModelProperty("字典值列表")
     @TableField(exist = false)
     private List<SysDictValue> dictValueList;
 

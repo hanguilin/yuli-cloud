@@ -26,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict/type")
-@Api("字典类型")
+@Api(description = "字典类型")
 public class SysDictTypeController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class SysDictTypeController {
      * @param id 主键id
      * @return
      */
-    @ApiOperation("根据id查询数据")
+    @ApiOperation("根据id查询字典类型")
     @GetMapping("/info/{id}")
     public Rest<SysDictType> doInfo(@PathVariable("id") String id) {
         return sysDictTypeService.getInfo(id);
@@ -50,6 +50,7 @@ public class SysDictTypeController {
      * @param sysDictType 字典类型
      * @return
      */
+    @ApiOperation("保存字典类型")
     @CacheEvict(value = CacheNames.DICT_DETAILS, allEntries = true)
     @PostMapping("/save")
     public Rest<SysDictType> doSave(@RequestBody SysDictType sysDictType) {
@@ -62,6 +63,7 @@ public class SysDictTypeController {
      * @param sysDictType 字典类型数据
      * @return
      */
+    @ApiOperation("更新字典类型")
     @CacheEvict(value = CacheNames.DICT_DETAILS, allEntries = true)
     @PutMapping("/update")
     public Rest<Boolean> doUpdate(@RequestBody SysDictType sysDictType) {
@@ -74,6 +76,7 @@ public class SysDictTypeController {
      * @param ids 主键id
      * @return
      */
+    @ApiOperation("删除字典类型")
     @CacheEvict(value = CacheNames.DICT_DETAILS, allEntries = true)
     @Transactional(rollbackFor = Exception.class)
     @DeleteMapping("/delete")
@@ -90,6 +93,7 @@ public class SysDictTypeController {
      * @param sysDictType 角色过滤
      * @return
      */
+    @ApiOperation("分页查询字典类型")
     @GetMapping("/page")
     public Rest<Page<SysRole>> doPage (Page page, SysDictType sysDictType) {
         LambdaQueryWrapper<SysDictType> lambdaQueryWrapper = Wrappers.lambdaQuery(SysDictType.class)
@@ -103,6 +107,7 @@ public class SysDictTypeController {
      *
      * @return
      */
+    @ApiOperation("查询所有字典数据")
     @GetMapping("/all")
     public Rest<List<SysDictType>> doAll() {
         return sysDictTypeService.all();

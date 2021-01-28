@@ -15,6 +15,7 @@ import ${importClass};
  * @createDate: ${now!}
  * @version: ${projectVersion!}
  */
+@ApiModel(${comment!})
 @TableName("${tableName!}")
 public class ${className!} extends Model<${className!}> {
 

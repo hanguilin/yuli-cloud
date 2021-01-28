@@ -8,6 +8,8 @@ import cn.javayuli.cloud.system.ref.entity.SysRole;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.base.Splitter;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import java.util.List;
  *
  * @author hanguilin
  */
+@Api(description = "字典键值")
 @RestController
 @RequestMapping("/dict/value")
 public class SysDictValueController {
@@ -33,6 +36,7 @@ public class SysDictValueController {
      * @param id 主键id
      * @return
      */
+    @ApiOperation("根据id查询字典键值")
     @GetMapping("/info/{id}")
     public Rest<SysDictValue> doInfo(@PathVariable("id") String id) {
         return Rest.success(sysDictValueService.getById(id));
@@ -44,6 +48,7 @@ public class SysDictValueController {
      * @param sysDictValue 字典键值
      * @return
      */
+    @ApiOperation("保存字典键值")
     @CacheEvict(value = CacheNames.DICT_DETAILS, allEntries = true)
     @PostMapping("/save")
     public Rest<Boolean> doSave(@RequestBody SysDictValue sysDictValue) {
@@ -56,6 +61,7 @@ public class SysDictValueController {
      * @param sysDictValue 字典键值数据
      * @return
      */
+    @ApiOperation("更新字典键值")
     @CacheEvict(value = CacheNames.DICT_DETAILS, allEntries = true)
     @PutMapping("/update")
     public Rest<Boolean> doUpdate(@RequestBody SysDictValue sysDictValue) {
@@ -68,6 +74,7 @@ public class SysDictValueController {
      * @param ids 主键id
      * @return
      */
+    @ApiOperation("删除字典键值")
     @CacheEvict(value = CacheNames.DICT_DETAILS, allEntries = true)
     @Transactional(rollbackFor = Exception.class)
     @DeleteMapping("/delete")
@@ -84,6 +91,7 @@ public class SysDictValueController {
      * @param sysDictValue 角色过滤
      * @return
      */
+    @ApiOperation("分页查询字典键值")
     @GetMapping("/page")
     public Rest<Page<SysRole>> doPage (Page page, SysDictValue sysDictValue) {
         return Rest.success(sysDictValueService.page(page, Wrappers.query(sysDictValue)));
