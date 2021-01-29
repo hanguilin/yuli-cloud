@@ -15,13 +15,15 @@
              @submit.native.prevent>
       <el-row :gutter="20">
         <#list fieldList as field>
-        <el-col :span="12">
-          <el-form-item label="${field.comment}"
-                        prop="${field.nameLower}">
-            <el-input v-model="inputForm.${field.nameLower}"
-                      placeholder="${field.comment}"></el-input>
-          </el-form-item>
-        </el-col>
+        <#if field.nameLower != 'id'>
+          <el-col :span="12"<#if field.nameLower == 'createBy' || field.nameLower == 'createTime' || field.nameLower == 'updateBy' || field.nameLower == 'updateTime'> v-if="method === 'info'"</#if>
+            <el-form-item label="${field.comment}"
+                          prop="${field.nameLower}">
+              <el-input v-model="inputForm.${field.nameLower}"
+                        placeholder="${field.comment}"></el-input>
+            </el-form-item>
+          </el-col>
+        </#if>
         </#list>
       </el-row>
 
@@ -29,7 +31,7 @@
     <span slot="footer"
           class="dialog-footer">
       <el-button @click="visible = false">关闭</el-button>
-      <el-button v-if="method != 'info'"
+      <el-button v-if="method !== 'info'"
                  type="primary"
                  @click="doSubmit()"
                  v-noMoreClick>确定</el-button>

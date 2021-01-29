@@ -65,7 +65,7 @@ public class ${className!}Controller {
     @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:update')")
     @PutMapping("/update")
     public Rest<Boolean> doUpdate(@RequestBody ${className!} ${classNameLower!}) {
-        return ${classNameLower!}Service.updateById(${classNameLower!}) ? Rest.success("更新${comment!}成功") : Rest.fail("更新${comment!}失败");
+        return ${classNameLower!}Service.updateById(${classNameLower!}) ? Rest.success("更新${comment!}成功", null) : Rest.fail("更新${comment!}失败");
     }
 
     /**

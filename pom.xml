@@ -15,6 +15,7 @@
         <module>yuli-system</module>
         <module>yuli-nacos</module>
         <module>yuli-auxiliary</module>
+        <module>yuli-quartz</module>
     </modules>
 
     <parent>

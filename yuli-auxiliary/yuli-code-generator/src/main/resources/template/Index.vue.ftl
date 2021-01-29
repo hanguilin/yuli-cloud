@@ -76,7 +76,8 @@
       </el-table-column>
       <#list fieldList as field>
       <el-table-column prop="${field.nameLower}"
-                       label="${field.comment}">
+                       label="${field.comment}"
+                       show-overflow-tooltip>
       </el-table-column>
       </#list>
       <el-table-column fixed="right"
@@ -146,7 +147,7 @@ export default {
   components: {
     ${className}Form
   },
-  activated () { },
+  activated () {},
   mounted () {
     this.refreshList()
   },

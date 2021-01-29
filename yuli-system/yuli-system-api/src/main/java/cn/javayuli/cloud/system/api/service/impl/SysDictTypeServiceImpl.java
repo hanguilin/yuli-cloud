@@ -1,5 +1,6 @@
 package cn.javayuli.cloud.system.api.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.javayuli.cloud.common.core.constant.CacheNames;
 import cn.javayuli.cloud.common.core.entity.Rest;
 import cn.javayuli.cloud.system.api.mapper.SysDictTypeMapper;
@@ -56,10 +57,19 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
     @Cacheable(value = CacheNames.DICT_DETAILS)
     @Override
     public Rest<List<SysDictType>> all() {
-        List<SysDictType> dictTypeList = list();
-        List<SysDictValue> dictValueList = sysDictValueService.list();
+        List<SysDictType> dictTypeList = list(Wrappers.lambdaQuery(SysDictType.class).select(SysDictType::getId, SysDictType::getType));
+        List<SysDictValue> dictValueList = sysDictValueService.list(Wrappers.lambdaQuery(SysDictValue.class).select(SysDictValue::getTypeId, SysDictValue::getLabel, SysDictValue::getValue));
         Map<String, List<SysDictValue>> groupingBy = dictValueList.stream().collect(Collectors.groupingBy(SysDictValue::getTypeId));
-        dictTypeList.forEach(o -> o.setDictValueList(groupingBy.get(o.getId())));
+        dictTypeList.forEach(o -> {
+            List<SysDictValue> sysDictValues = groupingBy.get(o.getId());
+            if (CollUtil.isNotEmpty(sysDictValues)) {
+                // 去除额外字段
+                sysDictValues.forEach(k -> k.setTypeId(null));
+                o.setDictValueList(sysDictValues);
+            }
+            // 去除额外字段
+            o.setId(null);
+        });
         return Rest.success(dictTypeList);
     }
 }

@@ -22,6 +22,7 @@ import javax.sql.DataSource;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 数据源业务接口实现类
@@ -48,6 +49,10 @@ public class DatasourceConfServiceImpl extends ServiceImpl<DatasourceConfMapper,
      */
     @Override
     public Rest<DatasourceConf> saveDatasource(DatasourceConf datasourceConf) {
+        Map<String, DataSource> currentDataSources = SpringContextHolder.getBean(DynamicRoutingDataSource.class).getCurrentDataSources();
+        if (currentDataSources.containsKey(datasourceConf.getName())) {
+            return Rest.fail("请确保名称的唯一性");
+        }
         if (!checkDataSource(datasourceConf)) {
             return Rest.fail("数据源连接失败，保存失败");
         }

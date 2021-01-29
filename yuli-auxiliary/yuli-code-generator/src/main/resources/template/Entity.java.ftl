@@ -15,7 +15,7 @@ import ${importClass};
  * @createDate: ${now!}
  * @version: ${projectVersion!}
  */
-@ApiModel(${comment!})
+@ApiModel("${comment!}")
 @TableName("${tableName!}")
 public class ${className!} extends Model<${className!}> {
 
@@ -23,6 +23,7 @@ public class ${className!} extends Model<${className!}> {
     /**
      * ${field.comment}
      */
+    @ApiModelProperty("${field.comment}")
     <#if field.primary>
     @TableId<#if field.autoincrement>(type = IdType.AUTO)<#else>(type = IdType.ASSIGN_UUID)</#if>
     </#if>
@@ -37,7 +38,6 @@ public class ${className!} extends Model<${className!}> {
     <#elseif field.nameLower=="delFlag">
     @TableLogic
     </#if>
-    @ApiModelProperty(${field.comment})
     private ${field.type} ${field.nameLower};
 </#list>
 
