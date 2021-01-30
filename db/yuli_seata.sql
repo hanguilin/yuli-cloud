@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50713
  Source Host           : localhost:3306
- Source Schema         : yuli-seata
+ Source Schema         : yuli_seata
 
  Target Server Type    : MySQL
  Target Server Version : 50713
  File Encoding         : 65001
 
- Date: 27/12/2020 14:43:28
+ Date: 29/01/2021 16:43:03
 */
 
 SET NAMES utf8mb4;

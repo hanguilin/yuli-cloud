@@ -94,6 +94,6 @@ public class SysDictValueController {
     @ApiOperation("分页查询字典键值")
     @GetMapping("/page")
     public Rest<Page<SysRole>> doPage (Page page, SysDictValue sysDictValue) {
-        return Rest.success(sysDictValueService.page(page, Wrappers.query(sysDictValue)));
+        return Rest.success(sysDictValueService.page(page, Wrappers.query(sysDictValue).lambda().orderByAsc(SysDictValue::getSort)));
     }
 }
