@@ -22,22 +22,24 @@
 ~~~
 yuli-cloud 快速开发平台
 
-├── yuli-auth -- oauth2 认证中心
-├── yuli-gateway -- spring cloud gateway 网关服务
-├── yuli-nacos -- spring cloud alibaba nacos 服务注册与配置中心
-└── yuli-common -- 公共项目形成的maven聚合项目
-     ├── yuli-common-core -- 核心工具库
-     ├── yuli-common-datasource -- mybatis-plus多数据源
-     ├── yuli-common-mybatis -- mybatis配置
-     ├── yuli-common-security -- security工具
-     ├── yuli-common-seata -- seata分布式事务配置
-     ├── yuli-common-swagger -- swagger文档
-     └── yuli-common-sentinel -- sentinel熔断限流配置
-└── yuli-auxiliary -- 辅助项目
+└── yuli-admin -- 系统基础运行模块
+    ├── yuli-auth -- oauth2 认证中心
+    ├── yuli-gateway -- spring cloud gateway 网关服务
+    ├── yuli-nacos -- spring cloud alibaba nacos 服务注册与配置中心
+    └── yuli-system
+        ├──yuli-system-api -- 系统基础配置接口
+        └── yuli-system-ref -- 系统基础配置实体及feign调用，ref即为refrence，表示可被引用的项目
+└── yuli-tools
     ├── yuli-sentinel-dashboard -- spring cloud alibaba sentinel 熔断限流控制面板
     ├── yuli-code-generator -- 代码生成器
-└── yuli-system -- 系统基础运行服务
-     └── yuli-system-api -- 系统基础配置接口
-     └── yuli-system-ref -- 系统基础配置实体及feign调用，ref即为refrence，表示可被引用的项目
-└── yuli-quartz -- 基于quartz的定时任务
+    └── yuli-quartz -- quartz定时任务
+└── yuli-common
+    ├── yuli-common-core -- 核心工具库
+    ├── yuli-common-datasource -- mybatis-plus多数据源
+    ├── yuli-common-mybatis -- mybatis配置
+    ├── yuli-common-security -- security工具
+    ├── yuli-common-seata -- seata分布式事务配置
+    ├── yuli-common-swagger -- swagger文档
+    └── yuli-common-sentinel -- sentinel熔断限流配置
+└── yuli-business -- 业务开发聚合项目
 ~~~

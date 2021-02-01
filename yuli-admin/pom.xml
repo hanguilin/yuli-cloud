@@ -9,19 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>yuli-common</artifactId>
+    <artifactId>yuli-admin</artifactId>
     <packaging>pom</packaging>
-    <description>公共项目</description>
+    <description>系统运行组件</description>
 
     <modules>
-        <module>yuli-common-mybatis</module>
-        <module>yuli-common-seata</module>
-        <module>yuli-common-core</module>
-        <module>yuli-common-security</module>
-        <module>yuli-common-sentinel</module>
-        <module>yuli-common-datasource</module>
-        <module>yuli-common-swagger</module>
+        <module>yuli-auth</module>
+        <module>yuli-gateway</module>
+        <module>yuli-nacos</module>
+        <module>yuli-system</module>
     </modules>
-
-
 </project>

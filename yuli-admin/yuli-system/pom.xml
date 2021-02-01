@@ -3,24 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>yuli-cloud</artifactId>
+        <artifactId>yuli-admin</artifactId>
         <groupId>cn.javayuli</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>yuli-common</artifactId>
+    <artifactId>yuli-system</artifactId>
     <packaging>pom</packaging>
-    <description>公共项目</description>
-
     <modules>
-        <module>yuli-common-mybatis</module>
-        <module>yuli-common-seata</module>
-        <module>yuli-common-core</module>
-        <module>yuli-common-security</module>
-        <module>yuli-common-sentinel</module>
-        <module>yuli-common-datasource</module>
-        <module>yuli-common-swagger</module>
+        <module>yuli-system-ref</module>
+        <module>yuli-system-api</module>
     </modules>
 
 

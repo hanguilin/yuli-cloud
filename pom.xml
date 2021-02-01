@@ -9,13 +9,10 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>
-        <module>yuli-gateway</module>
+        <module>yuli-admin</module>
+        <module>yuli-tools</module>
         <module>yuli-common</module>
-        <module>yuli-auth</module>
-        <module>yuli-system</module>
-        <module>yuli-nacos</module>
-        <module>yuli-auxiliary</module>
-        <module>yuli-quartz</module>
+        <module>yuli-business</module>
     </modules>
 
     <parent>

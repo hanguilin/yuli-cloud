@@ -9,19 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>yuli-common</artifactId>
+    <artifactId>yuli-business</artifactId>
     <packaging>pom</packaging>
-    <description>公共项目</description>
-
-    <modules>
-        <module>yuli-common-mybatis</module>
-        <module>yuli-common-seata</module>
-        <module>yuli-common-core</module>
-        <module>yuli-common-security</module>
-        <module>yuli-common-sentinel</module>
-        <module>yuli-common-datasource</module>
-        <module>yuli-common-swagger</module>
-    </modules>
-
+    <description>业务开发父项目</description>
 
 </project>

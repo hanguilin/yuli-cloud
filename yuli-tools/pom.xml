@@ -9,19 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>yuli-common</artifactId>
+    <artifactId>yuli-tools</artifactId>
     <packaging>pom</packaging>
-    <description>公共项目</description>
+    <description>工具类项目</description>
 
     <modules>
-        <module>yuli-common-mybatis</module>
-        <module>yuli-common-seata</module>
-        <module>yuli-common-core</module>
-        <module>yuli-common-security</module>
-        <module>yuli-common-sentinel</module>
-        <module>yuli-common-datasource</module>
-        <module>yuli-common-swagger</module>
+        <module>yuli-code-generator</module>
+        <module>yuli-sentinel-dashboard</module>
+        <module>yuli-quartz</module>
     </modules>
-
 
 </project>
