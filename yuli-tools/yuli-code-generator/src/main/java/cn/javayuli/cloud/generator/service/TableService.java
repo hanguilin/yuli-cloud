@@ -2,6 +2,9 @@ package cn.javayuli.cloud.generator.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @description: 表信息
  * @author: hanguilin
@@ -18,4 +21,13 @@ public interface TableService {
      * @return
      */
     Page doPage(Page page, String dsName);
+
+    /**
+     * 查找表字段
+     *
+     * @param tableName 表名
+     * @param dsName 数据源
+     * @return
+     */
+    List<Map<String, Object>> doColumn(String tableName, String dsName);
 }

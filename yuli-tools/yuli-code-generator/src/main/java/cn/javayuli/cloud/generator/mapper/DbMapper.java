@@ -46,6 +46,6 @@ public interface DbMapper {
      * @return
      */
     @DS("#last")
-    @Select("select column_name, data_type, column_comment, column_key, extra ,is_nullable,column_type from information_schema.columns where table_name = #{tableName} and table_schema = (select database()) order by ordinal_position")
+    @Select("select column_name AS columnName, data_type AS dataType, column_comment AS columnComment, column_key AS columnKey, extra ,is_nullable AS isNullable,column_type AS columnType from information_schema.columns where table_name = #{tableName} and table_schema = (select database()) order by ordinal_position")
     List<Map<String, Object>> queryColumns(@Param("tableName") String tableName, String dsName);
 }

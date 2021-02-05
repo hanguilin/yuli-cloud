@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @description: 查询表信息
  * @author: hanguilin
@@ -30,8 +33,21 @@ public class TableController {
      * @return
      */
     @PreAuthorize("hasAuthority('generator:table:page')")
-    @GetMapping("page")
+    @GetMapping("/page")
     public Rest<Page> doPage(Page page, String dsName){
         return Rest.success(tableService.doPage(page, dsName));
+    }
+
+    /**
+     * 查找表字段
+     *
+     * @param tableName 表名
+     * @param dsName 数据源
+     * @return
+     */
+    @PreAuthorize("hasAuthority('generator:table:page')")
+    @GetMapping("/column")
+    public Rest<List<Map<String, Object>>> doColumn(String tableName, String dsName){
+        return Rest.success(tableService.doColumn(tableName, dsName));
     }
 }

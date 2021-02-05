@@ -3,6 +3,7 @@ package cn.javayuli.cloud.system.api.controller;
 import cn.javayuli.cloud.common.core.entity.Rest;
 import cn.javayuli.cloud.system.api.service.SysMenuService;
 import cn.javayuli.cloud.system.ref.entity.SysMenu;
+import cn.javayuli.cloud.system.ref.vo.MenuUnitVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,31 @@ public class SysMenuController {
     @PostMapping("/save")
     public Rest<Boolean> doSave(@RequestBody SysMenu sysMenu) {
         return sysMenuService.saveMenu(sysMenu);
+    }
+
+    /**
+     * 批量保存数据
+     *
+     * @param sysMenuList 菜单数据
+     * @return
+     */
+    @ApiOperation("批量保存菜单")
+    @PostMapping("/saveBatch")
+    public Rest<Boolean> doSaveBatch(@RequestBody List<SysMenu> sysMenuList) {
+        return sysMenuService.saveBatchMenu(sysMenuList);
+    }
+
+    /**
+     * 保存单元菜单
+     * 单元指一个目录加增删改查按钮
+     *
+     * @param menuUnitVo 菜单数据
+     * @return
+     */
+    @ApiOperation(value = "保存单元菜单", notes = "单元指一个目录加增删改查按钮")
+    @PostMapping("/saveMenuUnit")
+    public Rest<Boolean> doSaveMenuUnit(@RequestBody MenuUnitVo menuUnitVo) {
+        return sysMenuService.saveMenuUnit(menuUnitVo);
     }
 
     /**

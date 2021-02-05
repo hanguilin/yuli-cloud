@@ -2,6 +2,7 @@ package cn.javayuli.cloud.system.api.service;
 
 import cn.javayuli.cloud.common.core.entity.Rest;
 import cn.javayuli.cloud.system.ref.entity.SysMenu;
+import cn.javayuli.cloud.system.ref.vo.MenuUnitVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -63,4 +64,21 @@ public interface SysMenuService extends IService<SysMenu> {
      * @return
      */
     List<SysMenu> setDeepTreeMenuChildren(List<SysMenu> sysMenus, String topId);
+
+    /**
+     * 批量保存数据
+     *
+     * @param sysMenuList 菜单数据
+     * @return
+     */
+    Rest<Boolean> saveBatchMenu(List<SysMenu> sysMenuList);
+
+    /**
+     * 保存单元菜单
+     * 单元指一个目录加增删改查按钮
+     *
+     * @param menuUnitVo 菜单数据
+     * @return
+     */
+    Rest<Boolean> saveMenuUnit(MenuUnitVo menuUnitVo);
 }

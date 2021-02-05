@@ -32,6 +32,12 @@
             <artifactId>yuli-common-sentinel</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>cn.javayuli</groupId>
+            <artifactId>yuli-system-ref</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
 
         <!-- web -->
         <dependency>

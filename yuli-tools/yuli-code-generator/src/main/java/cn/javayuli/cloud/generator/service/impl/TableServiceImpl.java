@@ -34,4 +34,16 @@ public class TableServiceImpl implements TableService {
         page.setRecords(tableList);
         return page;
     }
+
+    /**
+     * 查找表字段
+     *
+     * @param tableName 表名
+     * @param dsName 数据源
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> doColumn(String tableName, String dsName) {
+        return dbMapper.queryColumns(tableName, dsName);
+    }
 }

@@ -142,6 +142,12 @@ public class GeneratorDefinition extends Model<GeneratorDefinition> {
     @TableField(exist = false)
     private String now;
 
+    /**
+     * 权限前缀
+     */
+    @TableField(exist = false)
+    private String permissionPrefix;
+
 
     public String getId() {
         return id;
@@ -333,5 +339,13 @@ public class GeneratorDefinition extends Model<GeneratorDefinition> {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getPermissionPrefix() {
+        return permissionPrefix;
+    }
+
+    public void setPermissionPrefix(String permissionPrefix) {
+        this.permissionPrefix = permissionPrefix;
     }
 }

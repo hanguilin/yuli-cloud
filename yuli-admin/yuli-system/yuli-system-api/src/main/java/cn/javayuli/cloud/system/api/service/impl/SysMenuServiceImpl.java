@@ -3,12 +3,12 @@ package cn.javayuli.cloud.system.api.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.javayuli.cloud.common.core.entity.Rest;
-import cn.javayuli.cloud.system.api.service.SysRoleMenuService;
-import cn.javayuli.cloud.system.api.service.SysUserRoleService;
 import cn.javayuli.cloud.system.api.mapper.SysMenuMapper;
 import cn.javayuli.cloud.system.api.service.SysMenuService;
+import cn.javayuli.cloud.system.api.service.SysRoleMenuService;
 import cn.javayuli.cloud.system.ref.entity.SysMenu;
 import cn.javayuli.cloud.system.ref.entity.SysRoleMenu;
+import cn.javayuli.cloud.system.ref.vo.MenuUnitVo;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Splitter;
@@ -28,9 +28,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
-
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
 
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
@@ -193,6 +190,40 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             deepTreeMenuChildren(o, sysMenus);
             return o;
         }).sorted(Comparator.comparing(SysMenu::getSort)).collect(Collectors.toList());
+    }
+
+    /**
+     * 批量保存数据
+     *
+     * @param sysMenuList 菜单数据
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Rest<Boolean> saveBatchMenu(List<SysMenu> sysMenuList) {
+        saveBatch(sysMenuList);
+        return Rest.success();
+    }
+
+    /**
+     * 保存单元菜单
+     * 单元指一个目录加增删改查按钮
+     *
+     * @param menuUnitVo 菜单数据
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Rest<Boolean> saveMenuUnit(MenuUnitVo menuUnitVo) {
+        SysMenu directory = menuUnitVo.getDirectory();
+        save(directory);
+        List<SysMenu> buttonList = menuUnitVo.getButtonList();
+        if(CollUtil.isNotEmpty(buttonList)) {
+            String directoryId = directory.getId();
+            buttonList.forEach(o->o.setParentId(directoryId));
+            saveBatch(buttonList);
+        }
+        return Rest.success();
     }
 
     /**

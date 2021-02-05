@@ -1,19 +1,16 @@
 package cn.javayuli.cloud.generator.controller;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.javayuli.cloud.common.core.entity.Rest;
 import cn.javayuli.cloud.generator.entity.GeneratorDefinition;
 import cn.javayuli.cloud.generator.service.GeneratorDefinitionService;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 生成器controller
@@ -36,9 +33,19 @@ public class GeneratorDefinitionController {
      */
     @GetMapping("/recently")
     public Rest<GeneratorDefinition> getRecently(String tableName) {
-        Page page = generatorDefinitionService.page(new Page(1, 1), Wrappers.lambdaQuery(GeneratorDefinition.class).eq(GeneratorDefinition::getTableName, tableName).orderByDesc(GeneratorDefinition::getCreateTime));
-        List records = page.getRecords();
-        return Rest.success(CollUtil.isNotEmpty(records) ? records.get(0) : null);
+        return Rest.success(generatorDefinitionService.getRecently(tableName));
+    }
+
+    /**
+     * 预览代码
+     *
+     * @param generatorDefinition 生成属性描述
+     * @return
+     */
+    @PostMapping("/preview")
+    public Rest<Map<String, String>> doPreview(@RequestBody GeneratorDefinition generatorDefinition) throws IOException {
+        Map<String, String> resMap = generatorDefinitionService.genTemplate(generatorDefinition, null);
+        return Rest.success(resMap);
     }
 
     /**
@@ -59,5 +66,17 @@ public class GeneratorDefinitionController {
         response.setContentType("application/octet-stream; charset=UTF-8");
 
         IoUtil.write(response.getOutputStream(), Boolean.TRUE, codeByteArr);
+    }
+
+    /**
+     * 创建菜单
+     *
+     * @param tableName 表名
+     * @param parentId 菜单父id
+     * @return
+     */
+    @PostMapping("/createMenu")
+    public Rest<Boolean> doCreateMenu(String tableName, String parentId) {
+        return generatorDefinitionService.createMenu(tableName, parentId);
     }
 }

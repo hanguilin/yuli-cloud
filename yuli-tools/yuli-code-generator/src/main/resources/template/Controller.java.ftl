@@ -20,7 +20,7 @@ import java.util.List;
  * @createDate: ${now!}
  * @version: ${projectVersion!}
  */
-@Api(description = ${comment!})
+@Api(description = "${comment!}")
 @RestController
 @RequestMapping("/${classNameLower!}")
 public class ${className!}Controller {
@@ -35,7 +35,7 @@ public class ${className!}Controller {
     * @return
     */
     @ApiOperation("根据id查询${comment!}")
-    @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:info')")
+    @PreAuthorize("hasAuthority('${permissionPrefix!}:info')")
     @GetMapping("/info/{id}")
     public Rest<${className!}> doInfo(@PathVariable("id") String id) {
         ${className!} ${classNameLower!} = ${classNameLower!}Service.getById(id);
@@ -49,7 +49,7 @@ public class ${className!}Controller {
      * @return
      */
     @ApiOperation("保存${comment!}")
-    @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:save')")
+    @PreAuthorize("hasAuthority('${permissionPrefix!}:save')")
     @PostMapping("/save")
     public Rest<${className!}> doSave(@RequestBody ${className!} ${classNameLower!}) {
         return ${classNameLower!}Service.save(${classNameLower!}) ? Rest.success("保存${comment!}成功", ${classNameLower!}) : Rest.fail("保存${comment!}失败");
@@ -62,7 +62,7 @@ public class ${className!}Controller {
      * @return
      */
     @ApiOperation("更新${comment!}")
-    @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:update')")
+    @PreAuthorize("hasAuthority('${permissionPrefix!}:update')")
     @PutMapping("/update")
     public Rest<Boolean> doUpdate(@RequestBody ${className!} ${classNameLower!}) {
         return ${classNameLower!}Service.updateById(${classNameLower!}) ? Rest.success("更新${comment!}成功", null) : Rest.fail("更新${comment!}失败");
@@ -75,7 +75,7 @@ public class ${className!}Controller {
     * @return
     */
     @ApiOperation("删除${comment!}")
-    @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:delete')")
+    @PreAuthorize("hasAuthority('${permissionPrefix!}:delete')")
     @DeleteMapping("/delete")
     public Rest<Boolean> doDelete(@RequestParam String ids) {
         List<String> idList = Splitter.on(",").splitToList(ids);
@@ -91,7 +91,7 @@ public class ${className!}Controller {
      * @return
      */
     @ApiOperation("分页查询${comment!}")
-    @PreAuthorize("hasAuthority('${moduleName!}:${classNameLower!}:page')")
+    @PreAuthorize("hasAuthority('${permissionPrefix!}:page')")
     @GetMapping("/page")
     public Rest<Page<${className!}>> doPage(Page page, ${className!} ${classNameLower!}) {
         return Rest.success(${classNameLower!}Service.page(page, Wrappers.query(${classNameLower!})));

@@ -8,6 +8,9 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.javayuli.cloud.common.core.constant.FlagConstants;
+import cn.javayuli.cloud.common.core.entity.Rest;
+import cn.javayuli.cloud.common.core.exception.CheckedException;
 import cn.javayuli.cloud.common.core.util.FreeMarkerUtil;
 import cn.javayuli.cloud.common.core.util.SpringContextHolder;
 import cn.javayuli.cloud.generator.entity.FieldDefinition;
@@ -16,6 +19,11 @@ import cn.javayuli.cloud.generator.mapper.DbMapper;
 import cn.javayuli.cloud.generator.mapper.GeneratorDefinitionMapper;
 import cn.javayuli.cloud.generator.properties.GenerateProperties;
 import cn.javayuli.cloud.generator.service.GeneratorDefinitionService;
+import cn.javayuli.cloud.system.ref.entity.SysMenu;
+import cn.javayuli.cloud.system.ref.feign.RemoteMenuService;
+import cn.javayuli.cloud.system.ref.vo.MenuUnitVo;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +35,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -84,6 +93,14 @@ public class GeneratorDefinitionServiceImpl extends ServiceImpl<GeneratorDefinit
      */
     private static List<String> TEMPLATE_LIST;
 
+    /**
+     * 按钮对应权限
+     */
+    private static Map<String, String> BUTTON_MAP;
+
+    @Autowired
+    private RemoteMenuService remoteMenuService;
+
     static {
         List<String> temp = CollUtil.newArrayList();
         temp.add(CONTROLLER);
@@ -94,6 +111,12 @@ public class GeneratorDefinitionServiceImpl extends ServiceImpl<GeneratorDefinit
         temp.add(INDEX);
         temp.add(FORM);
         TEMPLATE_LIST = Collections.unmodifiableList(temp);
+        Map<String, String> tempMap = MapUtil.newHashMap(4);
+        tempMap.put("新建", "save");
+        tempMap.put("修改", "update");
+        tempMap.put("删除", "delete");
+        tempMap.put("查询", "info");
+        BUTTON_MAP = Collections.unmodifiableMap(tempMap);
     }
 
     @Autowired
@@ -114,45 +137,129 @@ public class GeneratorDefinitionServiceImpl extends ServiceImpl<GeneratorDefinit
         if (generatorDefinition == null) {
             return new byte[0];
         }
-        String tableName = generatorDefinition.getTableName();
-        // 查询表列信息
-        List<Map<String, Object>> columnInfoList = dbMapper.queryColumns(tableName, generatorDefinition.getDsName());
-        if (CollUtil.isEmpty(columnInfoList)) {
-            return new byte[0];
-        }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
-        // 设置实体值
-        assembly(generatorDefinition, columnInfoList);
-        // 替换模板字符,放入zip
-        freemarkerInToZip(zip, generatorDefinition);
+        genTemplate(generatorDefinition, zip);
         IoUtil.close(zip);
         return outputStream.toByteArray();
     }
 
     /**
-     * 替换模板字符并构造压缩包
-     *  @param zip                 zip流
-     * @param generatorDefinition 属性定义
+     * 生成模板
+     *
+     * @param generatorDefinition 配置
+     * @param zip 压缩对象
+     * @return
+     * @throws IOException
      */
-    private void freemarkerInToZip(ZipOutputStream zip, GeneratorDefinition generatorDefinition) throws IOException {
+    @Override
+    public Map<String, String> genTemplate(GeneratorDefinition generatorDefinition, ZipOutputStream zip) throws IOException {
+        String tableName = generatorDefinition.getTableName();
+        // 查询表列信息
+        List<Map<String, Object>> columnInfoList = dbMapper.queryColumns(tableName, generatorDefinition.getDsName());
+        if (CollUtil.isEmpty(columnInfoList)) {
+            throw new CheckedException("未查询到表信息");
+        }
+        // 设置实体值
+        assembly(generatorDefinition, columnInfoList);
+        // 替换模板字符,放入zip
+        return freemarkerInToZip(zip, generatorDefinition);
+    }
+
+    /**
+     * 创建菜单
+     *
+     * @param tableName 表名
+     * @param parentId  菜单父id
+     * @return
+     */
+    @Override
+    public Rest<Boolean> createMenu(String tableName, String parentId) {
+        GeneratorDefinition recently = getRecently(tableName);
+        if (recently == null) {
+            return Rest.fail("请先生成代码");
+        }
+        // 外层目录
+        SysMenu directory = new SysMenu();
+        directory.setTitle(recently.getComment());
+        directory.setIcon("el-icon-s-operation");
+        directory.setVisible(FlagConstants.TRUE);
+        // 目录
+        directory.setType("0");
+        // 系统页面
+        directory.setTarget("0");
+        String className = getClassName(recently.getTablePrefix(), recently.getTableName());
+        String classNameLower = firstCharLower(className);
+        String path = "/" + recently.getModuleName();
+        if (StrUtil.isNotBlank(recently.getSubModuleName())) {
+            path += "/" + recently.getSubModuleName();
+        }
+        path += className + "Index";
+        directory.setPath(path);
+        String permissionPrefix = getPermissionPrefix(recently.getModuleName(), recently.getSubModuleName(), classNameLower);
+        directory.setPermission(permissionPrefix + ":" + "page");
+        directory.setSort(1);
+        directory.setParentId(parentId);
+        // 构建按钮菜单
+        List<SysMenu> sysMenuList = BUTTON_MAP.entrySet().stream().map(entry -> {
+            SysMenu button = new SysMenu();
+            button.setType("2");
+            button.setTitle(entry.getKey());
+            button.setSort(30);
+            button.setPermission(permissionPrefix + ":" + entry.getValue());
+            return button;
+        }).collect(Collectors.toList());
+        MenuUnitVo menuUnitVo = new MenuUnitVo();
+        menuUnitVo.setDirectory(directory);
+        menuUnitVo.setButtonList(sysMenuList);
+        Rest<Boolean> booleanRest = remoteMenuService.doSaveMenuUnit(menuUnitVo);
+        return booleanRest;
+    }
+
+    /**
+     * 获取最新的生成配置
+     *
+     * @param tableName 表名
+     * @return
+     */
+    @Override
+    public GeneratorDefinition getRecently(String tableName) {
+        Page<GeneratorDefinition> page = page(new Page(1, 1), Wrappers.lambdaQuery(GeneratorDefinition.class).eq(GeneratorDefinition::getTableName, tableName).orderByDesc(GeneratorDefinition::getCreateTime));
+        List<GeneratorDefinition> records = page.getRecords();
+        return CollUtil.isNotEmpty(records) ? records.get(0) : null;
+    }
+
+    /**
+     * 替换模板字符并构造压缩包
+     *
+     * @param zip                 zip流
+     * @param generatorDefinition 属性定义
+     * @return
+     */
+    private Map<String, String> freemarkerInToZip(ZipOutputStream zip, GeneratorDefinition generatorDefinition) throws IOException {
+        Map<String, String> resMap = MapUtil.newHashMap(TEMPLATE_LIST.size());
         Map<String, Object> params = BeanUtil.beanToMap(generatorDefinition, false, true);
         freemarker.template.Configuration configuration = SpringContextHolder.getBean(freemarker.template.Configuration.class);
         configuration.setClassForTemplateLoading(FreeMarkerUtil.class, TPL_PATH);
-        for (String template: TEMPLATE_LIST) {
+        for (String template : TEMPLATE_LIST) {
             // 模板替换字符串
+            params.put("moduleName", getFullModule(generatorDefinition.getModuleName(), generatorDefinition.getSubModuleName(), "."));
             String tpl = FreeMarkerUtil.parseTpl(configuration, template, params);
-            // 添加到zip
-            zip.putNextEntry(new ZipEntry(Objects.requireNonNull(getFilePath(template, generatorDefinition))));
-            IoUtil.write(zip, StandardCharsets.UTF_8, false, tpl);
-            zip.closeEntry();
+            if(zip != null) {
+                // 添加到zip
+                zip.putNextEntry(new ZipEntry(Objects.requireNonNull(getFilePath(template, generatorDefinition))));
+                IoUtil.write(zip, StandardCharsets.UTF_8, false, tpl);
+                zip.closeEntry();
+            }
+            resMap.put(template, tpl);
         }
+        return resMap;
     }
 
     /**
      * 获取文件路径与名称
      *
-     * @param template    模板路径
+     * @param template            模板路径
      * @param generatorDefinition 生成类描述
      * @return
      */
@@ -160,64 +267,58 @@ public class GeneratorDefinitionServiceImpl extends ServiceImpl<GeneratorDefinit
         String className = generatorDefinition.getClassName();
         String packageName = generatorDefinition.getPackageName();
         String moduleName = generatorDefinition.getModuleName();
+        String subModuleName = generatorDefinition.getSubModuleName();
         String apiPackage = generatorDefinition.getApiPackage();
         String referencePackage = generatorDefinition.getReferencePackage();
         String structureJava = String.valueOf(generateProperties.getStructure().get("java"));
         String structureWeb = String.valueOf(generateProperties.getStructure().get("web"));
         // ###########前端页面###########
-        if (template.contains(INDEX)) {
-            return structureWeb + File.separator + className + "Index.vue";
+       if (template.contains(INDEX) || template.contains(FORM)) {
+           String webBasePath = structureWeb + File.separator + "src" + File.separator + "views" + File.separator + getFullModule(moduleName, subModuleName, File.separator);
+           return webBasePath + File.separator + className + template;
         }
-        if (template.contains(FORM)) {
-            return structureWeb + File.separator + className + "Form.vue";
-        }
-        String basePath = "src" + File.separator + "main" + File.separator + "java";
-        if (StrUtil.isNotBlank(packageName)) {
-            basePath += File.separator + packageName.replace(".", File.separator) + File.separator + moduleName;
-        }
+        // 后端文件基础路径
+        String basePath = structureJava + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + packageName.replace(".", File.separator) + File.separator + getFullModule(moduleName, subModuleName, File.separator);
         // ###########后台界面###########
         if (template.contains(CONTROLLER)) {
-            return structureJava + File.separator + basePath + File.separator + apiPackage + File.separator + "controller"+ File.separator + className + "Controller.java";
+            return basePath + File.separator + apiPackage + File.separator + "controller" + File.separator + className + CONTROLLER;
         }
         if (template.contains(SERVICE)) {
-            return structureJava + File.separator + basePath + File.separator + apiPackage + File.separator + "service" + File.separator + className + "Service.java";
+            return basePath + File.separator + apiPackage + File.separator + "service" + File.separator + className + SERVICE;
         }
         if (template.contains(SERVICE_IMPL)) {
-            return structureJava + File.separator + basePath + File.separator + apiPackage + File.separator + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
+            return basePath + File.separator + apiPackage + File.separator + "service" + File.separator + "impl" + File.separator + className + SERVICE_IMPL;
         }
         if (template.contains(MAPPER)) {
-            return structureJava + File.separator + basePath + File.separator + apiPackage + File.separator + "mapper" + File.separator + className + "Mapper.java";
+            return basePath + File.separator + apiPackage + File.separator + "mapper" + File.separator + className + MAPPER;
         }
         if (template.contains(ENTITY)) {
-            return structureJava + File.separator + basePath + File.separator + referencePackage + File.separator + "entity" + File.separator + className + ".java";
+            return basePath + File.separator + referencePackage + File.separator + "entity" + File.separator + className + ".java";
         }
         return null;
     }
 
     /**
      * 组装实体
-     *  @param generatorDefinition 生成描述对象
+     *
+     * @param generatorDefinition 生成描述对象
      * @param columnInfoList      列信息
      */
     private void assembly(GeneratorDefinition generatorDefinition, List<Map<String, Object>> columnInfoList) {
         // 拼接父子模块
         String moduleName = generatorDefinition.getModuleName();
         String subModuleName = generatorDefinition.getSubModuleName();
-        if (StrUtil.isNotBlank(subModuleName)) {
-            generatorDefinition.setModuleName(moduleName + File.separator + subModuleName);
-        }
         // 当前时间
         generatorDefinition.setNow(LocalDateTimeUtil.format(LocalDate.now(), DatePattern.CHINESE_DATE_PATTERN));
         String tableName = generatorDefinition.getTableName();
         // 去除表前缀
         String tablePrefix = generatorDefinition.getTablePrefix();
-        if (StrUtil.isNotBlank(tablePrefix) && tableName.startsWith(tablePrefix)) {
-            tableName = tableName.replaceFirst(tablePrefix, "");
-        }
         // 类名首字母大写
-        generatorDefinition.setClassName(columnToPropertyFirstUpper(tableName));
+        generatorDefinition.setClassName(getClassName(tablePrefix, tableName));
         // 类名首字母小写
         generatorDefinition.setClassNameLower(firstCharLower(generatorDefinition.getClassName()));
+        // 权限前缀
+        generatorDefinition.setPermissionPrefix(getPermissionPrefix(moduleName, subModuleName, generatorDefinition.getClassNameLower()));
         // 根据配置文件设置默认值
         setDefaultValue(generatorDefinition);
         Set<String> importClassList = CollUtil.newHashSet();
@@ -227,12 +328,12 @@ public class GeneratorDefinitionServiceImpl extends ServiceImpl<GeneratorDefinit
         columnInfoList.stream().forEach(column -> {
             FieldDefinition fieldDefinition = new FieldDefinition();
             // 设置属性名
-            String propertyName = columnToProperty(String.valueOf(column.get("column_name")));
+            String propertyName = columnToProperty(String.valueOf(column.get("columnName")));
             fieldDefinition.setName(propertyName);
             // 设置属性名第一个字符小写
             fieldDefinition.setNameLower(firstCharLower(propertyName));
             // 设置属性类型
-            Object dataType = typeMap.get(column.get("data_type"));
+            Object dataType = typeMap.get(column.get("dataType"));
             String typeStr = dataType == null ? null : String.valueOf(dataType);
             fieldDefinition.setType(typeStr);
 
@@ -241,10 +342,10 @@ public class GeneratorDefinitionServiceImpl extends ServiceImpl<GeneratorDefinit
                 importClassList.add(String.valueOf(importClassMap.get(dataType)));
             }
             // 设置属性注释
-            String columnComment = String.valueOf(column.get("column_comment"));
+            String columnComment = String.valueOf(column.get("columnComment"));
             fieldDefinition.setComment(columnComment);
             // 设置属性是否主键
-            String columnKey = String.valueOf(column.get("column_key"));
+            String columnKey = String.valueOf(column.get("columnKey"));
             fieldDefinition.setPrimary("PRI".equals(columnKey));
             // 设置属性是否自增
             String extra = String.valueOf(column.get("extra"));
@@ -253,6 +354,47 @@ public class GeneratorDefinitionServiceImpl extends ServiceImpl<GeneratorDefinit
         });
         generatorDefinition.setFieldList(fieldList);
         generatorDefinition.setImportClassList(importClassList);
+    }
+
+    /**
+     * 获取权限前缀
+     *
+     * @param module         模块
+     * @param subModule      子模块
+     * @param classNameLower 类名首字母小写
+     * @return
+     */
+    private String getPermissionPrefix(String module, String subModule, String classNameLower) {
+        return getFullModule(module, subModule, ":") + ":" + classNameLower;
+    }
+
+    /**
+     * 列名转类名
+     *
+     * @param tbPrefix  表前缀
+     * @param tableName 表名
+     * @return
+     */
+    private String getClassName(String tbPrefix, String tableName) {
+        if (StrUtil.isNotBlank(tbPrefix) && tableName.startsWith(tbPrefix)) {
+            tableName = tableName.replaceFirst(tbPrefix, "");
+        }
+        return columnToPropertyFirstUpper(tableName);
+    }
+
+    /**
+     * 获取完整的module
+     *
+     * @param module    模块
+     * @param subModule 子模块
+     * @param separator 分隔符
+     * @return
+     */
+    private String getFullModule(String module, String subModule, String separator) {
+        if (StrUtil.isNotBlank(subModule)) {
+            module += (separator + subModule);
+        }
+        return module;
     }
 
     /**
