@@ -43,3 +43,7 @@ yuli-cloud 快速开发平台
     └── yuli-common-sentinel -- sentinel熔断限流配置
 └── yuli-business -- 业务开发聚合项目
 ~~~
+
+#### 开发者文档
+
+[http://docs.javayuli.cn](http://docs.javayuli.cn)
