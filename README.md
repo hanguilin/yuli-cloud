@@ -2,7 +2,7 @@
 
 >基于SpringCloudAlibaba构建的敏捷开发项目
 
-#### 核心依赖
+## 核心依赖
 
 
 | dependencies         | version       |
@@ -17,7 +17,7 @@
 
 
 
-#### 模块说明
+## 模块说明
 
 ~~~
 yuli-cloud 快速开发平台
@@ -43,3 +43,67 @@ yuli-cloud 快速开发平台
     └── yuli-common-sentinel -- sentinel熔断限流配置
 └── yuli-business -- 业务开发聚合项目
 ~~~
+
+## 界面展示
+
+### 登录
+
+![登录页](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219090735702.png)
+
+### 主界面
+
+![主界面](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219090938770.png)
+
+### 基础功能
+
+#### 菜单管理
+
+![菜单列表](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219091106232.png)
+
+#### 用户管理
+
+![用户列表](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219091139032.png)
+
+#### 角色管理
+
+![角色列表](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219091222237.png)
+
+#### 机构管理
+
+![机构列表](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219091255079.png)
+
+#### 定时任务
+
+![任务列表](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219091925987.png)
+
+#### 字典管理
+
+![字典列表](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219091849136.png)
+
+#### 动态数据源
+
+![数据源列表](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219092011316.png)
+
+#### 代码生成配置
+
+![根据表配置相关信息后生成代码](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219092048941.png)
+
+#### Swagger开发文档
+
+![swagger](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219092155170.png)
+
+#### Knife4j文档
+
+![knife4j](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219092242996.png)
+
+#### 服务监控
+
+![监控界面](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219092425414.png)
+
+#### Zipkin链路追踪
+
+![zipkin](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219092513459.png)
+
+#### Nacos配置注册中心
+
+![nacos](https://cdn.jsdelivr.net/gh/hanguilin/images@main/img/image-20210219092601438.png)
