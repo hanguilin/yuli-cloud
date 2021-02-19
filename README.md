@@ -2,7 +2,7 @@
 
 >基于SpringCloudAlibaba构建的敏捷开发项目
 
-#### 核心依赖
+## 核心依赖
 
 
 | dependencies         | version       |
@@ -17,7 +17,7 @@
 
 
 
-#### 模块说明
+## 模块说明
 
 ~~~
 yuli-cloud 快速开发平台
